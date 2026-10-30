@@ -8,6 +8,7 @@ One page, no build step. Files:
 | `images/headshot.jpg` | Your photo (keep the name, or change `photo` in `SITE`). |
 | `cv.pdf` | The CV visitors can open. |
 | `cv-1.png`, `cv-2.png` | Images of each CV page, shown in the in-page viewer. |
+| `images/cdc-architecture.png`, `images/cdc-timing.png` | The two CDC figures in the IMPACT section (tabs, click to enlarge). |
 
 ## Edit
 1. Open `index.html` in a text editor (VS Code, or the pencil icon on GitHub).
@@ -16,6 +17,11 @@ One page, no build step. Files:
 4. Add an item by copying one `{ ... }` block and keeping the commas between blocks.
 5. Hide a section: set it to `false` under `sections`.
 6. Colors and fonts: the `:root` tokens at the top of `<style>` (light) and the two dark blocks right after.
+
+## Figures
+- One image: `figure: { src: "images/file.png", caption: "..." }` (click to enlarge).
+- Several images as tabs: `figures: [ { label: "Tab name", src: "...", alt: "...", caption: "..." }, ... ]`.
+- `wide: true` on a project puts its figures under the text at full width.
 
 ## Preview
 Double-click `index.html` to open it in a browser. Refresh after each save.

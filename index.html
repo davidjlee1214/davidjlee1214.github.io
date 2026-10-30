@@ -22,6 +22,7 @@
   --c1:#1D4E89; --c2:#0E7C78; --c3:#9C5D00; --c4:#A3346E;
   --bar-2:#8F9BAE; --bar-3:#CDD4DF;
   --on-strong:#FFFFFF; --scrim:rgba(14,40,65,.55); --sheet:#FFFFFF;
+  --fig-sheath:#CDE8F6; --fig-rot:#F7CFB4; --fig-fiber:#F9D5D5; --fig-contact:#BFC5CE; --fig-cell:#F8C97A; --fig-cell-line:#D99A3E;
   /* Type */
   --f-display:"Source Serif 4","Source Serif Pro",Georgia,"Times New Roman",serif;
   --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
@@ -39,6 +40,7 @@
     --c1:#8DB4F2; --c2:#4CC3BA; --c3:#E7B14C; --c4:#E87DB3;
     --bar-2:#64748A; --bar-3:#36475D;
     --on-strong:#0A121D; --scrim:rgba(0,0,0,.66); --sheet:#FFFFFF;
+    --fig-sheath:#1E4760; --fig-rot:#6E4630; --fig-fiber:#6B3440; --fig-contact:#4B5566; --fig-cell:#B9862F; --fig-cell-line:#D9A44E;
     color-scheme:dark;
   }
 }
@@ -51,6 +53,7 @@
   --c1:#8DB4F2; --c2:#4CC3BA; --c3:#E7B14C; --c4:#E87DB3;
   --bar-2:#64748A; --bar-3:#36475D;
   --on-strong:#0A121D; --scrim:rgba(0,0,0,.66); --sheet:#FFFFFF;
+  --fig-sheath:#1E4760; --fig-rot:#6E4630; --fig-fiber:#6B3440; --fig-contact:#4B5566; --fig-cell:#B9862F; --fig-cell-line:#D9A44E;
   color-scheme:dark;
 }
 
@@ -193,6 +196,20 @@ figure{margin:0}
 .specs td{font-family:var(--f-mono);color:var(--ink);font-variant-numeric:tabular-nums}
 .spec-note{font-size:.75rem;color:var(--muted);margin-top:8px;line-height:1.45}
 @media (max-width:900px){.project{grid-template-columns:1fr;gap:20px}}
+.project.wide .side{grid-column:2;grid-row:1}
+.wide-figs{grid-column:1/-1;min-width:0}
+@media (max-width:900px){.project.wide .side{grid-column:auto;grid-row:auto}}
+.figtabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.figtab{font:500 .82rem/1 var(--f-body);padding:7px 13px;border-radius:999px;border:1px solid var(--rule-strong);background:var(--paper);color:var(--muted);cursor:pointer}
+.figtab:hover{color:var(--ink);border-color:var(--accent)}
+.figtab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.zoomable{display:block;width:100%;padding:0;border:0;border-radius:8px;background:var(--sheet);cursor:zoom-in;overflow:hidden}
+.zoomable img{display:block;width:100%;height:auto;border-radius:0}
+.zoom-hint{color:var(--muted);white-space:nowrap}
+.zoom-overlay{position:fixed;inset:0;z-index:60;background:var(--scrim);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.zoom-panel{background:var(--paper);border:1px solid var(--rule);border-radius:14px;width:100%;max-width:1680px;max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.zoom-body{overflow:auto;background:var(--sheet)}
+.zoom-body img{display:block;width:100%;min-width:900px;height:auto}
 @media (max-width:640px){.entry-head .when{text-align:left}}
 
 /* Diagrams and charts (inline SVG, colored from the tokens) */
@@ -231,6 +248,20 @@ figure{margin:0}
 .dg .f-acc{fill:var(--accent)} .dg .f-b2{fill:var(--bar-2)} .dg .f-b3{fill:var(--bar-3)} .dg .f-sig{fill:var(--signal)}
 .dg .s1{stroke:var(--c1)} .dg .s2{stroke:var(--c2)} .dg .s3{stroke:var(--c3)} .dg .s4{stroke:var(--c4)}
 .dg .k1{fill:var(--c1)} .dg .k2{fill:var(--c2)} .dg .k3{fill:var(--c3)} .dg .k4{fill:var(--c4)}
+.dg .pf-wall{fill:var(--paper);stroke:var(--ink);stroke-width:1}
+.dg .pf-contact{fill:var(--fig-contact);stroke:var(--ink);stroke-width:1}
+.dg .pf-sheath{fill:var(--fig-sheath);stroke:var(--ink);stroke-width:.8}
+.dg .pf-rot{fill:var(--fig-rot);stroke:var(--ink);stroke-width:.8}
+.dg .pf-fiber{fill:var(--fig-fiber);stroke:var(--ink);stroke-width:.8}
+.dg .pf-line{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+.dg .pf-beam{fill:none;stroke:var(--signal);stroke-width:2;stroke-linejoin:round}
+.dg .pf-cell{fill:var(--fig-cell);stroke:var(--ink);stroke-width:1}
+.dg .pf-dend{fill:none;stroke:var(--fig-cell-line);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.dg .pf-arrow{fill:none;stroke:var(--c1);stroke-width:1.3}
+.dg .pf-ah{fill:var(--c1)}
+.dg .pf-t{font-family:var(--f-body);font-size:11px;fill:var(--text)}
+.dg .pf-h{font-family:var(--f-body);font-size:11.5px;font-weight:600;fill:var(--ink)}
+.dg .pf-i{font-family:var(--f-body);font-size:11px;font-style:italic;font-weight:600;fill:var(--ink)}
 
 /* Publications and news */
 .pub-news{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:48px}
@@ -326,6 +357,16 @@ body.cv-open{overflow:hidden}
       <button class="btn btn-small" type="button" id="cv-close" data-close-cv>Close</button>
     </div>
     <div class="cv-pages" id="cv-pages"></div>
+  </div>
+</div>
+
+<div class="zoom-overlay" id="zoom-overlay" role="dialog" aria-modal="true" aria-labelledby="zoom-title" hidden>
+  <div class="zoom-panel">
+    <div class="cv-bar">
+      <h2 id="zoom-title">Figure</h2>
+      <button class="btn btn-small" type="button" id="zoom-close" data-close-zoom>Close</button>
+    </div>
+    <div class="zoom-body"><img id="zoom-img" alt=""></div>
   </div>
 </div>
 
@@ -470,7 +511,12 @@ const SITE = {
             "Added flicker-aware gated-ring-oscillator TDCs with differenced dithering; in 0.18-µm, 0.9-V CMOS, simulations show 0.102 fF resolution in 5.9 µs at 110 µW and 0.040 fF calibrated four-channel error.",
           ],
           tools: ["Cadence Virtuoso", "Spectre PSS / pnoise", "Transient noise", "Verilog-A", "OCEAN"],
-          figure: { diagram: "cdc", caption: "Concept. Each sensor capacitor sets the delay between two adjacent oscillator phases, and gated-ring-oscillator TDCs time every window, so all four channels convert in every period." },
+          // wide: true puts the figures under the text at full width. figures: one tab per image.
+          wide: true,
+          figures: [
+            { label: "Architecture", src: "images/cdc-architecture.png", alt: "Block diagram: QSB quadrature RC oscillator with four sensor cells, XOR enable generation with dither, and the gated-ring-oscillator TDC with phase latch, counters and decoder", caption: "One QSB quadrature RC oscillator holds a sensor in each cell. XOR gates turn adjacent phases into enable windows, and each channel's gated-ring-oscillator TDC (15 stages, 327 ps LSB) times its window; a phase latch and two 12-bit counters feed the decoder." },
+            { label: "Timing", src: "images/cdc-timing.png", alt: "Oscillator cells and unit cell schematic, with node voltages, quadrature phases, enable, ring output, strobe and output code over one period", caption: "(a) The four cells and one unit cell. (b) Each sensor sets two windows per period (t and t′) whose length follows R times the cell capacitance (sensor + C2 + C3). EN1 runs the ring during t1, the ring holds its phase between windows, and STB1 latches it; one period is about 367 ns." },
+          ],
           specs: [
             ["Process, supply", "0.18-µm CMOS, 0.9 V"],
             ["Channels", "4, simultaneous, one oscillator"],
@@ -521,7 +567,7 @@ const SITE = {
             "Validated a 6–8 µm focal spot over a ~200 µm depth of field with twist-free light delivery during rotation, and presented the work as a poster at the HST-Wellman Summer Institute.",
           ],
           tools: ["Zemax OpticStudio", "Fiber cleaving, splicing, tapering", "Nanoscribe 3D printing", "Stepper-motor assembly"],
-          figure: { diagram: "uoct", caption: "The fiber core stays still while only the elliptical mirror spins, so the probe needs no rotary joint and shows no rotational distortion." },
+          figure: { diagram: "probe", caption: "Probe overview. The single-mode to multi-mode fiber core (1st layer) stays still while the 2nd layer spins the elliptical mirror inside a clear outer sheath, so light reaches tissue all around the DBS electrode without a rotary joint." },
           specs: [
             ["Scan", "360°, circumferential"],
             ["Focal spot", "6–8 µm"],
@@ -788,17 +834,32 @@ const SITE = {
     let inner = "";
     if (f.diagram && DIAGRAMS[f.diagram]) inner = `<div class="fig-scroll">${DIAGRAMS[f.diagram](uid)}</div>`;
     else if (f.chart) inner = `<div class="fig-scroll">${groupedBars(f.chart)}</div>`;
-    else if (f.src) inner = `<img src="${esc(f.src)}" alt="${esc(f.alt || "")}" loading="lazy">`;
+    else if (f.src) inner = zoomImg(f);
     if (!inner) return "";
     return `<figure class="fig">${inner}${f.caption ? `<figcaption>${md(f.caption)}</figcaption>` : ""}</figure>`;
+  }
+  function zoomImg(f) {
+    return `<button type="button" class="zoomable" data-zoom="${esc(f.src)}" data-zoom-title="${esc(f.label || f.alt || "Figure")}" aria-label="Enlarge figure${f.label ? ": " + esc(f.label) : ""}"><img src="${esc(f.src)}" alt="${esc(f.alt || "")}" loading="lazy"></button>`;
+  }
+  function figureSetHTML(list) {
+    const id = "fs" + (++figCount);
+    const tabs = list.length > 1 ? `<div class="figtabs" role="tablist" aria-label="Figures">${list.map((f, i) => `<button type="button" class="figtab" role="tab" id="${id}-t${i}" aria-controls="${id}-p${i}" aria-selected="${i === 0}" data-figtab="${i}">${esc(f.label || "Figure " + (i + 1))}</button>`).join("")}</div>` : "";
+    const panels = list.map((f, i) => {
+      const inner = f.src ? zoomImg(f) : (f.diagram && DIAGRAMS[f.diagram] ? `<div class="fig-scroll">${DIAGRAMS[f.diagram](id + "d" + i)}</div>` : "");
+      const hint = f.src ? ` <span class="zoom-hint">Select the image to enlarge it.</span>` : "";
+      return `<figure class="fig" role="tabpanel" id="${id}-p${i}" aria-labelledby="${id}-t${i}"${i ? " hidden" : ""}>${inner}${f.caption || hint ? `<figcaption>${f.caption ? md(f.caption) : ""}${hint}</figcaption>` : ""}</figure>`;
+    }).join("");
+    return `<div class="figset">${tabs}${panels}</div>`;
   }
   function specsHTML(p) {
     if (!(p.specs || []).length) return "";
     return `<div class="spec-block"><table class="specs"><caption>Key specifications</caption><tbody>${p.specs.map(([k, v]) => `<tr><th scope="row">${esc(k)}</th><td>${md(v)}</td></tr>`).join("")}</tbody></table>${p.specNote ? `<p class="spec-note">${md(p.specNote)}</p>` : ""}</div>`;
   }
   function projectHTML(p) {
-    const side = figureHTML(p.figure) + specsHTML(p);
-    return `<article class="project"${p.id ? ` id="${esc(p.id)}"` : ""}>
+    const figs = (p.figures || []).length ? figureSetHTML(p.figures) : figureHTML(p.figure);
+    const wide = !!(p.wide && figs);
+    const side = (wide ? "" : figs) + specsHTML(p);
+    return `<article class="project${wide ? " wide" : ""}"${p.id ? ` id="${esc(p.id)}"` : ""}>
       <div class="proj-main">
         <h4>${md(p.title)}${p.tag ? ` <span class="tag">${esc(p.tag)}</span>` : ""}</h4>
         ${p.dates ? `<p class="proj-dates">${esc(p.dates)}</p>` : ""}
@@ -806,6 +867,7 @@ const SITE = {
         ${(p.tools || []).length ? `<div class="tools" aria-label="Tools">${p.tools.map((t) => `<span>${esc(t)}</span>`).join("")}</div>` : ""}
       </div>
       ${side ? `<div class="side">${side}</div>` : ""}
+      ${wide ? `<div class="wide-figs">${figs}</div>` : ""}
     </article>`;
   }
 
@@ -1019,26 +1081,53 @@ const SITE = {
       return s + `</svg>`;
     },
 
-    uoct(uid) {
-      const a = "ah-" + uid, W = 520, H = 230;
-      let s = `<svg viewBox="0 0 ${W} ${H}" class="dg" role="img" aria-label="Probe concept: a stationary fiber core inside a rotating sheath, with a spinning elliptical mirror that sends a focused beam sideways into tissue">${defs(a)}`;
-      s += `<rect x="300" y="168" width="220" height="56" class="tissue"/><text x="512" y="216" text-anchor="end" class="lbl">tissue</text>`;
-      s += `<rect x="22" y="70" width="64" height="66" rx="6" class="motor"/>`;
-      s += `<text x="22" y="152" class="lbl">hollow-shaft</text><text x="22" y="166" class="lbl">stepper motor</text>`;
-      s += `<rect x="110" y="82" width="360" height="42" rx="10" class="tube"/>`;
-      s += `<line x1="4" y1="103" x2="392" y2="103" class="fiber"/><rect x="352" y="99" width="40" height="8" rx="2" class="mmf"/>`;
-      s += `<path d="M195.5,78.8 A9,28 0 1,0 204.5,78.8" class="wire" marker-end="url(#${a})"/><text x="200" y="66" text-anchor="middle" class="strong">360°</text>`;
-      s += `<polygon points="392,101 424,94 432,107 392,105" class="beam"/>`;
-      s += `<path d="M416,86 Q434,94 444,118" class="mirror"/>`;
-      s += `<polygon points="423,104 439,100 432,186 430,186" class="beam"/><circle cx="431" cy="186" r="2.6" class="dot"/>`;
-      s += `<path d="M437,176 h5 M439.5,176 V196 M437,196 h5" class="wire"/>`;
-      s += `<text x="420" y="186" text-anchor="end" class="strong">6–8 µm spot</text><text x="420" y="201" text-anchor="end" class="lbl">~200 µm DOF</text>`;
-      s += `<text x="470" y="72" text-anchor="end" class="lbl">rotating elliptical mirror</text>`;
-      s += `<text x="120" y="144" class="lbl">stationary fiber core (SMF → MMF, EDOF)</text>`;
-      s += `<text x="120" y="160" class="strong">fiber never turns: no rotary joint</text>`;
+    probe(uid) {
+      const W = 520, H = 580, a = "pa-" + uid;
+      let s = `<svg viewBox="0 0 ${W} ${H}" class="dg" role="img" aria-label="Probe cross-section: stationary single-mode to multi-mode fiber core in a metal tube, a rotating layer carrying an elliptical mirror, a clear outer sheath, and the DBS electrode; the beam reflects off the mirror to a focus in tissue">`;
+      s += `<defs><marker id="${a}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="pf-ah"/></marker></defs>`;
+      // DBS electrode walls with contacts
+      [16, 252].forEach((x) => {
+        s += `<rect x="${x}" y="34" width="12" height="532" class="pf-wall"/>`;
+        [64, 176, 288, 400].forEach((y) => { s += `<rect x="${x}" y="${y}" width="12" height="48" class="pf-contact"/>`; });
+      });
+      // 3rd layer: clear outer sheath
+      s += `<rect x="40" y="44" width="10" height="512" class="pf-sheath"/><rect x="230" y="44" width="10" height="512" class="pf-sheath"/>`;
+      // 2nd layer: rotating tube (upper) and its motor coupling (lower)
+      s += `<rect x="74" y="176" width="9" height="276" class="pf-rot"/><rect x="197" y="176" width="9" height="276" class="pf-rot"/>`;
+      s += `<rect x="60" y="430" width="9" height="122" class="pf-rot"/><rect x="211" y="430" width="9" height="122" class="pf-rot"/>`;
+      // mirror housing with the elliptical mirror surface and the aperture below it
+      s += `<path d="M78.5,176 V158 Q86,84 201.5,62 V176" class="pf-line"/>`;
+      s += `<path d="M78.5,168 H110 V206 M201.5,168 H170 V206" class="pf-line"/>`;
+      // 1st layer: metal tube with SMF and MMF inside
+      s += `<rect x="96" y="224" width="9" height="246" class="pf-wall"/><rect x="175" y="224" width="9" height="246" class="pf-wall"/>`;
+      s += `<rect x="107" y="236" width="66" height="94" class="pf-fiber"/><rect x="107" y="330" width="66" height="114" class="pf-fiber"/>`;
+      s += `<text x="140" y="283" text-anchor="middle" class="pf-h" transform="rotate(-90 140 283)">MMF</text><text x="140" y="387" text-anchor="middle" class="pf-h" transform="rotate(-90 140 387)">SMF</text>`;
+      // beam: out of the fiber, onto the mirror, and to a focus in tissue
+      const F = [400, 84];
+      s += `<path d="M92.5,118.3 L140,228 L145.5,78.4" class="pf-beam"/><path d="M92.5,118.3 L${F[0]},${F[1]} M145.5,78.4 L${F[0]},${F[1]}" class="pf-beam"/>`;
+      // tissue: a neuron at the focus
+      s += `<path d="M392,76 L378,62 L370,64 M378,62 L376,50 M402,73 L400,56 L392,46 M400,56 L410,44 M410,80 L428,72 L440,76 M428,72 L434,60 M406,94 C414,104 402,112 410,124" class="pf-dend"/>`;
+      s += `<circle cx="${F[0]}" cy="${F[1]}" r="11" class="pf-cell"/><circle cx="${F[0]}" cy="${F[1]}" r="3" class="f-sig"/>`;
+      s += `<text x="16" y="24" class="pf-i">DBS electrode</text><text x="504" y="24" text-anchor="end" class="pf-i">Tissue</text><text x="86" y="52" class="pf-i">Elliptical mirror</text>`;
+      s += `<text x="298" y="152" class="pf-t">6–8 µm spot, ~200 µm depth of field</text>`;
+      // callouts
+      const call = (ty, tx, title, lines) => {
+        let o = `<line x1="286" y1="${ty}" x2="${tx}" y2="${ty}" class="pf-arrow" marker-end="url(#${a})"/>`;
+        o += `<text x="292" y="${ty + 4}" class="pf-h">${title}</text>`;
+        lines.forEach((l, i) => { o += `<text x="292" y="${ty + 19 + i * 14}" class="pf-t">· ${l}</text>`; });
+        return o;
+      };
+      s += call(202, 154, "Mineral oil for index matching", ["Lower reflectance (instead of an 8° tilt)", "Beam grows for a larger aperture"]);
+      s += call(270, 175, "Multi-mode fiber", ["Mirror tunnel for extended depth of focus"]);
+      s += call(318, 186, "Metal tube for protection", ["Keeps the fibers from twisting", "Needs low surface roughness"]);
+      s += call(386, 175, "Single-mode fiber", ["Short-wavelength light (650–800 nm)", "630HP (⌀ 4 ± 0.5 µm) has low throughput"]);
+      // layer legend
+      [["pf-fiber", "1st layer · stationary optical fibers"], ["pf-rot", "2nd layer · rotates with the motor"], ["pf-sheath", "3rd layer · clear plastic outer sheath"], ["pf-contact", "DBS electrode contacts"]].forEach(([cls, t], i) => {
+        const y = 474 + i * 22;
+        s += `<rect x="292" y="${y - 10}" width="12" height="12" rx="2" class="${cls}"/><text x="312" y="${y}" class="pf-t">${t}</text>`;
+      });
       return s + `</svg>`;
     },
-
     soc(uid) {
       const a = "ah-" + uid, W = 520, H = 236;
       let s = `<svg viewBox="0 0 ${W} ${H}" class="dg" role="img" aria-label="AI SoC block diagram: RISC-V core, DMA and HyperRAM controller on an AXI4 bus, an AXI-to-APB bridge, and APB peripherals">${defs(a)}`;
@@ -1089,10 +1178,39 @@ const SITE = {
     const t = e.target;
     if (t.closest("[data-open-cv]")) { e.preventDefault(); openCV(); return; }
     if (t.closest("[data-close-cv]") || t === $("#cv-overlay")) { closeCV(); return; }
+    const tab = t.closest("[data-figtab]");
+    if (tab) {
+      const set = tab.closest(".figset"), i = +tab.getAttribute("data-figtab");
+      set.querySelectorAll("[data-figtab]").forEach((b, k) => b.setAttribute("aria-selected", String(k === i)));
+      set.querySelectorAll(".fig[role=tabpanel]").forEach((f, k) => { f.hidden = k !== i; });
+      return;
+    }
+    const z = t.closest("[data-zoom]");
+    if (z) { openZoom(z); return; }
+    if (t.closest("[data-close-zoom]") || t === $("#zoom-overlay")) { closeZoom(); return; }
     const c = t.closest("[data-copy]");
     if (c) copy(c);
   });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#cv-overlay").hidden) closeCV(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (!$("#zoom-overlay").hidden) closeZoom();
+    else if (!$("#cv-overlay").hidden) closeCV();
+  });
+  function openZoom(btn) {
+    const img = $("#zoom-img"), inner = btn.querySelector("img");
+    img.src = btn.getAttribute("data-zoom");
+    img.alt = inner ? inner.alt : "";
+    $("#zoom-title").textContent = btn.getAttribute("data-zoom-title") || "Figure";
+    lastFocus = btn;
+    $("#zoom-overlay").hidden = false;
+    document.body.classList.add("cv-open");
+    $("#zoom-close").focus();
+  }
+  function closeZoom() {
+    $("#zoom-overlay").hidden = true;
+    document.body.classList.remove("cv-open");
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
 
   let downloadsReady = false;
   async function initCvActions() {
