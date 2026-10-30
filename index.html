@@ -1,0 +1,1143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>David Jeehwan Lee</title>
+<meta name="description" content="David Jeehwan Lee, KAIST electrical engineering senior applying to EE PhD programs. Near-sensor AI hardware: sensor interface ICs, time-domain data conversion, and energy-efficient inference.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap">
+<style>
+/* Layout: a one-page research notebook. A signal-chain spine (Sense, Read out & convert, Move & store, Infer)
+   carries the story, and every project ends in a datasheet-style spec table.
+   To restyle the site, edit only the tokens in this first block (and the matching dark block below). */
+:root{
+  /* Color */
+  --paper:#FBFCFE; --surface:#F1F4F9; --surface-2:#E6EBF3;
+  --ink:#0E2841; --text:#26364B; --muted:#5B697D;
+  --rule:#DCE2EB; --rule-strong:#B9C4D4;
+  --accent:#1D4E89; --accent-ink:#FFFFFF; --link:#1A4F8F;
+  --mark:#FFEF9A; --signal:#C8102E;
+  --c1:#1D4E89; --c2:#0E7C78; --c3:#9C5D00; --c4:#A3346E;
+  --bar-2:#8F9BAE; --bar-3:#CDD4DF;
+  --on-strong:#FFFFFF; --scrim:rgba(14,40,65,.55); --sheet:#FFFFFF;
+  /* Type */
+  --f-display:"Source Serif 4","Source Serif Pro",Georgia,"Times New Roman",serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  /* Space */
+  --maxw:1120px; --radius:12px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0A121D; --surface:#111C2B; --surface-2:#18263A;
+    --ink:#EAF0F8; --text:#C5CFDC; --muted:#8F9CB1;
+    --rule:#223148; --rule-strong:#34475F;
+    --accent:#8DB4F2; --accent-ink:#0A121D; --link:#9CBFF6;
+    --mark:rgba(255,206,77,.30); --signal:#FF6B6B;
+    --c1:#8DB4F2; --c2:#4CC3BA; --c3:#E7B14C; --c4:#E87DB3;
+    --bar-2:#64748A; --bar-3:#36475D;
+    --on-strong:#0A121D; --scrim:rgba(0,0,0,.66); --sheet:#FFFFFF;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0A121D; --surface:#111C2B; --surface-2:#18263A;
+  --ink:#EAF0F8; --text:#C5CFDC; --muted:#8F9CB1;
+  --rule:#223148; --rule-strong:#34475F;
+  --accent:#8DB4F2; --accent-ink:#0A121D; --link:#9CBFF6;
+  --mark:rgba(255,206,77,.30); --signal:#FF6B6B;
+  --c1:#8DB4F2; --c2:#4CC3BA; --c3:#E7B14C; --c4:#E87DB3;
+  --bar-2:#64748A; --bar-3:#36475D;
+  --on-strong:#0A121D; --scrim:rgba(0,0,0,.66); --sheet:#FFFFFF;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--paper)}
+h1,h2,h3,h4{text-wrap:balance}
+p{margin:0}
+a{color:var(--link);text-decoration-thickness:1px;text-underline-offset:2px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+mark{color:inherit;background-color:transparent;background-image:linear-gradient(var(--mark),var(--mark));background-repeat:no-repeat;background-size:100% 78%;background-position:0 70%;padding:0 .1em;border-radius:2px;animation:sweep .9s .3s cubic-bezier(.3,.7,.3,1) both}
+@keyframes sweep{from{background-size:0% 78%}to{background-size:100% 78%}}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;font:500 .9375rem/1 var(--f-body);padding:11px 16px;border-radius:8px;border:1px solid var(--rule-strong);background:var(--paper);color:var(--ink);text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--accent);text-decoration:none}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-small{padding:7px 12px;font-size:.875rem}
+.email-chip{display:inline-flex;align-items:center;border:1px solid var(--rule-strong);border-radius:8px;overflow:hidden;max-width:100%}
+.email-chip .addr{font-family:var(--f-mono);font-size:.875rem;color:var(--ink);padding:10px 12px;user-select:all;overflow-wrap:anywhere}
+.email-chip .copy{font:500 .8125rem/1 var(--f-body);border:0;border-left:1px solid var(--rule-strong);background:var(--surface);color:var(--ink);padding:12px 12px;cursor:pointer;align-self:stretch}
+.email-chip .copy:hover{background:var(--surface-2)}
+
+/* Top bar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);background:color-mix(in srgb,var(--paper) 90%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.topbar-inner{display:flex;align-items:center;gap:12px;min-height:56px}
+.brand{font-family:var(--f-display);font-weight:600;font-size:1.05rem;color:var(--ink);text-decoration:none;white-space:nowrap}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;justify-content:flex-end}
+.nav::-webkit-scrollbar{display:none}
+.nav a{font-size:.875rem;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:6px;white-space:nowrap}
+.nav a:hover,.nav a.active{color:var(--ink);background:var(--surface)}
+@media (max-width:640px){.brand{display:none}.nav{justify-content:flex-start}}
+
+/* Hero */
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,64px);align-items:start;padding-block:clamp(40px,7vw,84px) clamp(28px,4vw,48px)}
+.status{display:inline-flex;align-items:center;gap:8px;max-width:100%;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.04em;color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:5px 12px}
+.status .dot{width:7px;height:7px;border-radius:50%;background:var(--signal);flex:none}
+.hero h1{font-family:var(--f-display);font-weight:600;font-size:clamp(2.5rem,5.4vw,3.75rem);line-height:1.04;letter-spacing:-.015em;color:var(--ink);margin:18px 0 6px}
+.affil{color:var(--muted);font-size:1rem}
+.tagline{font-family:var(--f-display);font-weight:500;font-size:clamp(1.35rem,2.5vw,1.8rem);line-height:1.32;color:var(--ink);max-width:28ch;margin:22px 0 16px;text-wrap:balance}
+.summary{max-width:64ch}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:24px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:32px 0 0;padding-top:16px;border-top:1px solid var(--rule)}
+.facts dt{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:4px 0 0;color:var(--ink);font-weight:500;font-size:.95rem;line-height:1.4}
+.portrait{width:clamp(170px,21vw,250px);max-width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:14px;border:1px solid var(--rule);background:var(--surface)}
+@media (max-width:860px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.hero-grid{grid-template-columns:1fr}.portrait{order:-1;width:132px}}
+
+/* Selected results */
+.band{background:var(--surface);border-block:1px solid var(--rule)}
+.highlights{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding-block:24px}
+.hl{display:block;padding:4px 20px;border-left:1px solid var(--rule);text-decoration:none;color:inherit;min-width:0}
+.hl:first-child{border-left:0;padding-left:0}
+.hl .v{font-family:var(--f-mono);font-size:1.5rem;font-weight:500;color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
+.hl .u{font-family:var(--f-mono);font-size:.82rem;color:var(--muted);white-space:nowrap}
+.hl .l{display:block;font-size:.875rem;line-height:1.45;color:var(--text);margin-top:6px}
+.hl:hover .v{color:var(--accent)}
+@media (max-width:900px){.highlights{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px}.hl:nth-child(3){border-left:0;padding-left:0}}
+@media (max-width:460px){.highlights{grid-template-columns:1fr}.hl{border-left:0;padding-left:0}}
+
+/* Sections */
+.section{padding-block:clamp(52px,7vw,88px);scroll-margin-top:56px}
+.section + .section{border-top:1px solid var(--rule)}
+.section-head{display:grid;gap:8px;margin-bottom:32px;max-width:72ch}
+.section-head h2{font-family:var(--f-display);font-weight:600;font-size:clamp(1.65rem,3vw,2.2rem);line-height:1.15;color:var(--ink);margin:0}
+.section-head .lead{font-family:var(--f-display);font-size:clamp(1.15rem,2vw,1.35rem);line-height:1.4;color:var(--ink)}
+.section-head .intro{color:var(--muted)}
+
+/* Vision */
+.vision-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.pillar{border-top:2px solid var(--ink);padding-top:14px;min-width:0}
+.pillar h3{font:600 1.05rem/1.3 var(--f-body);color:var(--ink);margin:0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pillar h3 span{font-family:var(--f-mono);font-size:.7rem;font-weight:400;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pillar p{margin-top:8px}
+.evidence{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;margin-top:36px;align-items:start}
+.stats{display:grid;gap:12px}
+.stat{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 16px}
+.stat .num{font-family:var(--f-mono);font-size:1.6rem;font-weight:500;color:var(--signal);white-space:nowrap}
+.stat p{font-size:.9rem;line-height:1.45}
+.source{font-size:.78rem;color:var(--muted);line-height:1.45}
+@media (max-width:900px){.vision-grid,.evidence{grid-template-columns:1fr}}
+
+/* One thread */
+.thread{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.stage{display:flex;flex-direction:column;gap:12px;min-width:0}
+.stage-head{position:relative;display:flex;align-items:baseline;gap:10px;background:var(--ink);color:var(--paper);font-weight:600;padding:10px 14px;border-radius:8px}
+.stage-head .n{font-family:var(--f-mono);font-size:.8rem;font-weight:500;opacity:.7}
+.stage:not(:last-child) .stage-head::after{content:"";position:absolute;right:-17px;top:50%;transform:translateY(-50%);border:7px solid transparent;border-left:10px solid var(--rule-strong);border-right:0}
+.tcard{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:14px 15px;text-decoration:none;color:inherit;transition:border-color .15s,transform .15s}
+.tcard:hover{border-color:var(--accent);text-decoration:none;transform:translateY(-1px)}
+.tcard .proj{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.03em;color:var(--muted)}
+.tcard .lesson{font-family:var(--f-display);font-weight:600;font-size:1.08rem;line-height:1.3;color:var(--ink)}
+.tcard .ev{font-size:.86rem;line-height:1.5}
+.goal{margin-top:26px;display:grid;gap:12px}
+.goal-line{position:relative;height:2px;background:var(--signal);margin-inline:6px}
+.goal-line::before,.goal-line::after{content:"";position:absolute;top:50%;transform:translateY(-50%);border:6px solid transparent}
+.goal-line::before{left:-8px;border-right:10px solid var(--signal);border-left:0}
+.goal-line::after{right:-8px;border-left:10px solid var(--signal);border-right:0}
+.goal p{text-align:center;font-size:1.05rem;color:var(--ink);text-wrap:balance}
+.goal strong{color:var(--signal)}
+@media (max-width:960px){.thread{grid-template-columns:repeat(2,minmax(0,1fr))}.stage:nth-child(2) .stage-head::after{display:none}}
+@media (max-width:560px){.thread{grid-template-columns:1fr}.stage .stage-head::after{display:none}}
+
+/* Research and projects */
+.entry{display:grid;gap:28px}
+.entry + .entry{margin-top:64px}
+.entry-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:6px 24px;border-bottom:1px solid var(--rule-strong);padding-bottom:12px}
+.entry-head h3{font-family:var(--f-display);font-weight:600;font-size:1.5rem;line-height:1.2;color:var(--ink);margin:0}
+.entry-head .role{margin-top:4px;color:var(--text)}
+.entry-head .role .adv{color:var(--muted)}
+.entry-head .when{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);text-align:right;line-height:1.5}
+.project{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:32px;align-items:start;scroll-margin-top:72px}
+.project + .project{padding-top:32px;border-top:1px dashed var(--rule-strong)}
+.project h4{font:600 1.15rem/1.35 var(--f-body);color:var(--ink);margin:0}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:.68rem;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:2px;white-space:nowrap}
+.proj-dates{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);margin-top:4px}
+.bullets{margin:14px 0 0;padding-left:1.15em;display:grid;gap:9px}
+.bullets li::marker{color:var(--rule-strong)}
+.tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.tools span{font-family:var(--f-mono);font-size:.74rem;color:var(--muted);background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:3px 8px}
+.side{display:grid;gap:18px;min-width:0}
+figure{margin:0}
+.fig{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 14px 12px;min-width:0}
+.fig-scroll{overflow-x:auto}
+.fig svg{display:block;width:100%;height:auto;min-width:430px}
+.fig svg.chart{min-width:360px}
+.fig img{display:block;width:100%;height:auto;border-radius:6px}
+.fig figcaption{font-size:.8rem;color:var(--muted);margin-top:10px;line-height:1.45}
+.specs{width:100%;border-collapse:collapse;font-size:.85rem}
+.specs caption{text-align:left;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-bottom:6px}
+.specs th,.specs td{padding:6px 0;border-bottom:1px solid var(--rule);vertical-align:top;text-align:left}
+.specs tr:first-child th,.specs tr:first-child td{border-top:1.5px solid var(--ink)}
+.specs th{font-weight:500;color:var(--muted);width:40%;padding-right:12px}
+.specs td{font-family:var(--f-mono);color:var(--ink);font-variant-numeric:tabular-nums}
+.spec-note{font-size:.75rem;color:var(--muted);margin-top:8px;line-height:1.45}
+@media (max-width:900px){.project{grid-template-columns:1fr;gap:20px}}
+@media (max-width:640px){.entry-head .when{text-align:left}}
+
+/* Diagrams and charts (inline SVG, colored from the tokens) */
+.dg{font-family:var(--f-mono);font-size:12.5px}
+.dg text{fill:var(--text)}
+.dg .lbl{fill:var(--muted);font-size:11px}
+.dg .ttl{fill:var(--ink);font-weight:500}
+.dg .val{fill:var(--ink);font-size:11px;font-weight:500}
+.dg .strong{fill:var(--ink);font-weight:500}
+.dg .acc{fill:var(--accent);font-weight:500}
+.dg text.on{fill:var(--on-strong);font-weight:500}
+.dg .box{fill:var(--paper);stroke:var(--rule-strong);stroke-width:1}
+.dg .box-acc{fill:var(--paper);stroke:var(--accent);stroke-width:1.6}
+.dg .wire{stroke:var(--muted);stroke-width:1.2;fill:none}
+.dg .bus{stroke:var(--muted);stroke-width:4;stroke-linecap:round}
+.dg .sig{stroke:var(--ink);stroke-width:1.4;fill:none}
+.dg .guide{stroke:var(--rule-strong);stroke-width:1;stroke-dasharray:2 3}
+.dg .grid{stroke:var(--rule);stroke-width:1}
+.dg .axis{stroke:var(--rule-strong);stroke-width:1}
+.dg .ah{fill:var(--muted)}
+.dg .xing{stroke:var(--signal);stroke-width:1.3;stroke-dasharray:4 3;fill:none}
+.dg .xing-t{fill:var(--signal);font-size:10.5px}
+.dg .tube{fill:var(--surface-2);stroke:var(--muted);stroke-width:1.2}
+.dg .motor{fill:var(--surface-2);stroke:var(--muted);stroke-width:1.2}
+.dg .fiber{stroke:var(--c1);stroke-width:2.6;stroke-linecap:round}
+.dg .mmf{fill:var(--c1);opacity:.55}
+.dg .mirror{stroke:var(--c4);stroke-width:4;fill:none;stroke-linecap:round}
+.dg .beam{fill:var(--c1);opacity:.25}
+.dg .tissue{fill:var(--mark)}
+.dg .row{stroke:var(--c1);stroke-width:1;opacity:.6}
+.dg .col{stroke:var(--c2);stroke-width:1;opacity:.6}
+.dg .dot{fill:var(--ink)}
+.dg .mux{fill:var(--paper);stroke:var(--muted);stroke-width:1.2}
+.dg .hl-band{fill:var(--mark);opacity:.7}
+.dg .cap{stroke-width:3;stroke-linecap:round}
+.dg .f-acc{fill:var(--accent)} .dg .f-b2{fill:var(--bar-2)} .dg .f-b3{fill:var(--bar-3)} .dg .f-sig{fill:var(--signal)}
+.dg .s1{stroke:var(--c1)} .dg .s2{stroke:var(--c2)} .dg .s3{stroke:var(--c3)} .dg .s4{stroke:var(--c4)}
+.dg .k1{fill:var(--c1)} .dg .k2{fill:var(--c2)} .dg .k3{fill:var(--c3)} .dg .k4{fill:var(--c4)}
+
+/* Publications and news */
+.pub-news{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:48px}
+.subhead{font-family:var(--f-display);font-weight:600;font-size:1.35rem;color:var(--ink);margin:0 0 14px}
+.pubs{list-style:none;margin:0;padding:0;display:grid;gap:18px}
+.pub{display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:10px}
+.pub .key{font-family:var(--f-mono);font-size:.82rem;color:var(--muted);padding-top:2px}
+.pub .title{color:var(--ink);font-weight:500;line-height:1.45}
+.pub .authors,.pub .venue{font-size:.92rem;margin-top:2px}
+.pub .venue{color:var(--muted)}
+.status-tag{display:inline-block;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:2px;white-space:nowrap}
+.news{list-style:none;margin:0;padding:0}
+.news li{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:14px;padding:10px 0;border-top:1px solid var(--rule);font-size:.93rem;line-height:1.5}
+.news li:last-child{border-bottom:1px solid var(--rule)}
+.news time{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);padding-top:2px;white-space:nowrap}
+@media (max-width:860px){.pub-news{grid-template-columns:1fr;gap:40px}}
+
+/* About */
+.about-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:44px;align-items:start}
+.about-text{display:grid;gap:14px;max-width:66ch}
+.how{margin-top:8px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:16px 18px}
+.how h3{font-family:var(--f-mono);font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.aside{display:grid;gap:26px;min-width:0}
+.block h3{font-family:var(--f-mono);font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.edu{border-top:1.5px solid var(--ink);padding-top:10px}
+.edu .school{color:var(--ink);font-weight:600}
+.edu .meta{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);margin-top:2px}
+.edu p{font-size:.92rem;margin-top:6px}
+.skills{margin:0;display:grid;gap:10px}
+.skills div{border-top:1px solid var(--rule);padding-top:8px}
+.skills dt{font-weight:600;color:var(--ink);font-size:.9rem}
+.skills dd{margin:2px 0 0;font-size:.88rem;color:var(--text)}
+.lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:44px;margin-top:48px}
+.dated{list-style:none;margin:0;padding:0}
+.dated li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:9px 0;border-top:1px solid var(--rule);font-size:.92rem;line-height:1.45}
+.dated li:last-child{border-bottom:1px solid var(--rule)}
+.dated .d{font-family:var(--f-mono);font-size:.76rem;color:var(--muted);white-space:nowrap;flex:none}
+.dated strong{color:var(--ink);font-weight:600}
+@media (max-width:860px){.about-grid,.lists{grid-template-columns:1fr}}
+@media (max-width:480px){.dated li{flex-direction:column;gap:2px}}
+
+/* Footer */
+.footer{background:var(--surface);border-top:1px solid var(--rule)}
+.footer-inner{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;padding-block:48px 40px}
+.footer h2{font-family:var(--f-display);font-weight:600;font-size:1.6rem;color:var(--ink);margin:0 0 8px}
+.footer p{max-width:58ch}
+.footer .actions{margin-top:18px}
+.footer .updated{font-family:var(--f-mono);font-size:.75rem;color:var(--muted);text-align:right}
+@media (max-width:720px){.footer-inner{grid-template-columns:1fr}.footer .updated{text-align:left}}
+
+/* CV viewer */
+.cv-overlay{position:fixed;inset:0;z-index:60;background:var(--scrim);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.cv-panel{background:var(--paper);border:1px solid var(--rule);border-radius:14px;width:100%;max-width:900px;max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.cv-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--rule)}
+.cv-bar h2{font-family:var(--f-display);font-size:1.15rem;font-weight:600;color:var(--ink);margin:0 auto 0 4px}
+.cv-status{font-size:.82rem;color:var(--muted)}
+.cv-pages{overflow:auto;padding:16px;display:grid;gap:16px;background:var(--surface)}
+.cv-pages img{display:block;width:100%;height:auto;background:var(--sheet);border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+body.cv-open{overflow:hidden}
+
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" id="brand" href="#hero"></a>
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <button class="btn btn-small" type="button" data-open-cv>CV</button>
+  </div>
+</header>
+
+<main>
+  <section id="hero" class="hero"></section>
+  <section id="highlights" class="band" aria-label="Selected results"></section>
+  <section id="vision" class="section"></section>
+  <section id="thread" class="section"></section>
+  <section id="research" class="section"></section>
+  <section id="projects" class="section"></section>
+  <section id="publications" class="section"></section>
+  <section id="about" class="section"></section>
+</main>
+<footer id="contact" class="footer"></footer>
+
+<div class="cv-overlay" id="cv-overlay" role="dialog" aria-modal="true" aria-labelledby="cv-title" hidden>
+  <div class="cv-panel">
+    <div class="cv-bar">
+      <h2 id="cv-title">Curriculum vitae</h2>
+      <span class="cv-status" id="cv-status" role="status"></span>
+      <button class="btn btn-small" type="button" id="cv-save" hidden>Save PDF</button>
+      <a class="btn btn-small" id="cv-open" href="#" target="_blank" rel="noopener" hidden>Open PDF <span aria-hidden="true">↗</span></a>
+      <button class="btn btn-small" type="button" id="cv-close" data-close-cv>Close</button>
+    </div>
+    <div class="cv-pages" id="cv-pages"></div>
+  </div>
+</div>
+
+<noscript><p class="wrap" style="padding-block:24px">This page needs JavaScript to show its content. Contact: davidjlee@kaist.ac.kr</p></noscript>
+
+<script>
+/* =====================================================================
+   EDIT YOUR SITE HERE
+   Everything visitors read comes from the SITE object below.
+
+   - Change any text inside the quotes.
+   - Add an item (a project, a paper, a news line): copy one { ... } block,
+     paste it next to the original, and edit it. Keep the commas between blocks.
+   - Hide a whole section: set it to false under "sections".
+   - Images and files sit next to this page: images/headshot.jpg, cv.pdf,
+     cv-1.png and cv-2.png. Replace a file with one of the same name, or
+     change the path here.
+   - Colors and fonts: edit the tokens at the top of the <style> block.
+
+   Formatting you can use inside any text:
+     **bold**   *italic*   ==highlighted==   [link text](https://example.com)
+   ===================================================================== */
+const SITE = {
+  lastUpdated: "Oct. 2026",
+
+  sections: {
+    highlights: true,
+    vision: true,
+    thread: true,
+    research: true,
+    projects: true,
+    publications: true,
+    about: true,
+  },
+
+  profile: {
+    name: "David Jeehwan Lee",
+    status: "Applying to EE PhD programs for Fall 2027",
+    affiliation: "Electrical Engineering, KAIST · B.S. expected Feb. 2027",
+    tagline: "I design circuits and systems that let sensors deliver ==decisions, not raw data==.",
+    summary: "I am an electrical engineering senior at KAIST, graduating early in February 2027. I have built a quad-channel capacitance-to-digital converter for my B.S. thesis, a readout for flexible ion-gel sensor arrays, a 360° µOCT probe for deep brain stimulation at Massachusetts General Hospital, and FPGA prototypes of an AI SoC. In a PhD, I want to put readout, data conversion, and inference on one chip, so that only decisions leave the sensor.",
+    photo: "images/headshot.jpg",
+    photoAlt: "Portrait of David Jeehwan Lee",
+    email: "davidjlee@kaist.ac.kr",
+    links: [
+      { label: "LinkedIn", url: "https://www.linkedin.com/in/david-jeehwan-lee-3a7983382" },
+      // { label: "Google Scholar", url: "https://scholar.google.com/citations?user=..." },
+      // { label: "GitHub", url: "https://github.com/..." },
+    ],
+    facts: [
+      ["Research area", "Near-sensor AI hardware"],
+      ["GPA", "3.82 / 4.30, Cum Laude"],
+      ["Citizenship", "U.S. and Republic of Korea"],
+      ["Languages", "English and Korean, both native"],
+    ],
+  },
+
+  // The CV opens in a viewer on this page. "pages" are images of each CV page.
+  // To link a PDF hosted elsewhere (for example Google Drive), paste its link in externalUrl.
+  cv: {
+    pages: ["cv-1.png", "cv-2.png"],
+    pdf: "cv.pdf",
+    filename: "David_Jeehwan_Lee_CV.pdf",
+    externalUrl: "",
+  },
+
+  highlights: [
+    { value: "0.102 fF", unit: "in 5.9 µs", label: "Resolution of my quad-channel CDC at 110 µW in 0.18-µm CMOS (simulated)", href: "#cdc" },
+    { value: "6–8 µm", unit: "focal spot", label: "Held over a ~200 µm depth of field by a 360° µOCT probe for DBS guidance", href: "#uoct" },
+    { value: "7.7", unit: "frames/s", label: "Live capacitance map from a flexible ion-gel pressure-sensor array", href: "#iongel" },
+    { value: "87%", unit: "vs. 78%", label: "Walk-by breaths caught by my LSTM vs. the best rule-based detector", href: "#co2" },
+  ],
+
+  vision: {
+    eyebrow: "Research vision",
+    title: "Near-sensor AI hardware",
+    lead: "Circuits and systems that let sensors deliver decisions, not raw data.",
+    pillars: [
+      { title: "Problem", sub: "why it matters", text: "Moving and converting data costs far more energy than computing on it. A DRAM access costs about 1,000× a 16-bit multiply, and the analog readout alone uses 50–75% of an image sensor's energy. The bottleneck is the boundary between sensor and compute." },
+      { title: "Approach", sub: "what I will do", text: "Near- and in-sensor computing through analog–digital co-design: readout, time-domain conversion, and inference on one chip, so only decisions leave the sensor." },
+      { title: "Application", sub: "where it is tested", text: "I treat applications as testbeds: wearable health monitors, microfluidic diagnostics, robotics, and voice interfaces." },
+    ],
+    chart: {
+      title: "Energy per operation, 45-nm CMOS (log scale)",
+      unit: "pJ", min: 0.1, max: 1000,
+      rows: [
+        { label: "16-bit add", value: 0.18 },
+        { label: "16-bit multiply", value: 0.62 },
+        { label: "SRAM, 4K words", value: 8 },
+        { label: "SRAM, 32K words", value: 11 },
+        { label: "DRAM access", value: 640, tone: "signal" },
+      ],
+      source: "A. Pedram et al., “Dark memory and accelerator-rich system optimization in the dark silicon era,” *IEEE Design & Test*, 2016, Table I.",
+      sourceUrl: "https://arxiv.org/abs/1602.04183",
+    },
+    stats: [
+      { value: "50–75%", text: "of an image sensor's energy goes to the analog readout, before any computation." },
+      { value: "−85%", text: "sensor energy when the first ConvNet layer moves into the analog readout." },
+    ],
+    statSource: "R. LiKamWa et al., “RedEye: Analog ConvNet image sensor architecture for continuous mobile vision,” *ISCA*, 2016.",
+    statSourceUrl: "https://meteor.ame.asu.edu/papers/likamwa2016redeye-isca.pdf",
+  },
+
+  thread: {
+    eyebrow: "One thread",
+    title: "Every project hit the sensor‑to‑compute boundary",
+    intro: "My projects line up along the path a signal takes from the physical world to a decision. Each one taught me where that path loses energy or accuracy. Select a card to see the project.",
+    stages: [
+      { name: "Sense", cards: [
+        { project: "µOCT probe · MGH", lesson: "Fix distortion at its source, not after the fact.", evidence: "Kept the fiber still and spun only the mirror: no rotational distortion or rotary-joint loss, with a 6–8 µm spot.", href: "#uoct" },
+        { project: "Ion-gel sensor readout · IOEL", lesson: "Know the sensor's physics before readout.", evidence: "MΩ series resistance limits the sensor's response to low frequencies, so a µs-scale readout missed it. A slower discharge and calibration restored a real-time array readout.", href: "#iongel" },
+      ]},
+      { name: "Read out & convert", cards: [
+        { project: "Phase noise → CDC · IMPACT", lesson: "Find the noise source, then design around it.", evidence: "ISF analysis showed that asymmetric edges upconvert flicker noise, so I chose a relaxation oscillator. One shared QSB oscillator then reads four sensors at once: 0.102 fF in 5.9 µs at 110 µW.", href: "#cdc" },
+      ]},
+      { name: "Move & store", cards: [
+        { project: "AI SoC on FPGA · AI-PIM", lesson: "Data movement, not compute, sets system performance.", evidence: "Memory bandwidth and clock-domain crossings were the real limits.", href: "#soc" },
+      ]},
+      { name: "Infer", cards: [
+        { project: "CO₂ breath LSTM", lesson: "ML pays off where the signal is too weak for rules.", evidence: "Caught 92% of weak breaths vs. 68% for the best rule-based detector, and running it on the node would cost only 0.2–0.5% of its awake power.", href: "#co2" },
+        { project: "TinyML wake word", lesson: "Software alone hits a wall; hardware must match.", evidence: "INT8 cut the model size by ~40%, but CPU unpacking stalled the speedup.", href: "#tinyml" },
+      ]},
+    ],
+    goal: "**PhD goal:** collapse this chain. Compute where the signal is born, so only decisions cross the boundary.",
+  },
+
+  research: [
+    {
+      lab: "IMPACT Lab, KAIST",
+      role: "Undergraduate Researcher",
+      advisor: "Advisor: Prof. Minkyu Je",
+      dates: "Jan. 2026 – Present",
+      place: "Daejeon, Korea",
+      projects: [
+        {
+          id: "cdc",
+          title: "Quad-channel time-domain capacitance-to-digital converter",
+          tag: "B.S. thesis",
+          bullets: [
+            "Showed with ISF-based time-variant simulations that asymmetric rise and fall times upconvert flicker noise and raise the 1/f³ corner, and that waveform symmetry suppresses it; moved to a relaxation oscillator for low jitter.",
+            "Designed a quad-channel CDC for in-line microfluidic droplet sensing that places one sensor in each cell of a quadrature-phase swing-boosted RC oscillator, converting all four channels every period without multiplexing.",
+            "Added flicker-aware gated-ring-oscillator TDCs with differenced dithering; in 0.18-µm, 0.9-V CMOS, simulations show 0.102 fF resolution in 5.9 µs at 110 µW and 0.040 fF calibrated four-channel error.",
+          ],
+          tools: ["Cadence Virtuoso", "Spectre PSS / pnoise", "Transient noise", "Verilog-A", "OCEAN"],
+          figure: { diagram: "cdc", caption: "Concept. Each sensor capacitor sets the delay between two adjacent oscillator phases, and gated-ring-oscillator TDCs time every window, so all four channels convert in every period." },
+          specs: [
+            ["Process, supply", "0.18-µm CMOS, 0.9 V"],
+            ["Channels", "4, simultaneous, one oscillator"],
+            ["Resolution", "0.102 fF rms (N = 16)"],
+            ["Conversion time", "5.9 µs (N = 16)"],
+            ["Power", "110 µW (oscillator + 4 channels)"],
+            ["Calibrated error", "0.040 fF rms"],
+            ["Crosstalk", "−25.4 dB"],
+          ],
+          specNote: "Schematic-level simulation, TT, 27 °C. N is the number of periods averaged per conversion. Paper accepted by the IEIE Fall Conference 2026.",
+        },
+        {
+          id: "iongel",
+          title: "Flexible ion-gel pressure-sensor array readout",
+          tag: "Collaboration with IOEL",
+          bullets: [
+            "Built a multiplexed readout for a 10×10 ion-gel capacitive sensor array: two 16:1 analog MUXes route each row–column crossing to a PCap04 capacitance-to-digital converter, controlled by an Arduino over I²C, with a Python host for calibration, logging, and live display.",
+            "Traced low readings to the sensor's frequency dependence: LCR sweeps showed MΩ-level series resistance and a pressure response at 100 Hz–1 kHz that vanishes by 1 MHz, while the PCap04 times a µs-scale discharge. Slowing the discharge (10 kΩ → 180 kΩ) raised the pressure response from ~5 pF to ~11 pF.",
+            "Calibrated out MUX and wiring parasitics (~8 pF per row line), fit the gain against 56 pF reference capacitors, and displayed a real-time ΔC map at 7.7 frames/s by scanning only the connected pixels.",
+          ],
+          tools: ["PCap04", "Arduino", "I²C", "LCR meter", "Python"],
+          figure: { diagram: "iongel", caption: "Readout chain, the fix that doubled the pressure response, and one live frame from the connected 3×3 pixels (ΔC in pF)." },
+          specs: [
+            ["Array", "10 × 10 ion-gel capacitive sensors"],
+            ["Front end", "2 × 16:1 analog MUX → PCap04"],
+            ["Control", "Arduino (I²C) + Python host"],
+            ["Pressure response", "~5 pF → ~11 pF after the fix"],
+            ["Line parasitics", "~8 pF per row, calibrated out"],
+            ["Live map", "7.7 frames/s"],
+          ],
+        },
+      ],
+    },
+    {
+      lab: "Tearney Lab, Massachusetts General Hospital",
+      role: "Research Intern",
+      advisor: "Advisor: Prof. Guillermo J. Tearney · Harvard-MIT Health Sciences and Technology",
+      dates: "Jun. – Aug. 2026",
+      place: "Boston, MA",
+      projects: [
+        {
+          id: "uoct",
+          title: "Circumferential-scanning µOCT probe for deep brain stimulation guidance",
+          tag: "Poster, 2026",
+          bullets: [
+            "Developed a 360° scanning µOCT probe for real-time deep brain stimulation (DBS) guidance that eliminates rotational distortion and fiber-optic rotary-joint loss by pairing a stationary extended-depth-of-field (EDOF) optical core with a rotating elliptical micro-mirror.",
+            "Designed the optics in Zemax OpticStudio, fabricated the fiber core (cleaving, splicing, and tapering single- and multi-mode fiber), and integrated a Nanoscribe 3D-printed mirror into a handheld motorized prototype.",
+            "Validated a 6–8 µm focal spot over a ~200 µm depth of field with twist-free light delivery during rotation, and presented the work as a poster at the HST-Wellman Summer Institute.",
+          ],
+          tools: ["Zemax OpticStudio", "Fiber cleaving, splicing, tapering", "Nanoscribe 3D printing", "Stepper-motor assembly"],
+          figure: { diagram: "uoct", caption: "The fiber core stays still while only the elliptical mirror spins, so the probe needs no rotary joint and shows no rotational distortion." },
+          specs: [
+            ["Scan", "360°, circumferential"],
+            ["Focal spot", "6–8 µm"],
+            ["Depth of field", "~200 µm (extended)"],
+            ["Removed", "Rotational distortion, rotary-joint loss"],
+            ["Prototype", "Handheld, hollow-shaft stepper motor"],
+          ],
+        },
+      ],
+    },
+    {
+      lab: "AI-PIM Semiconductor Design Research Center, KAIST",
+      role: "Research Intern",
+      advisor: "Funded by the Ministry of Science and ICT",
+      dates: "Oct. – Dec. 2025",
+      place: "Daejeon, Korea",
+      projects: [
+        {
+          id: "soc",
+          title: "FPGA prototyping and peripheral verification for an AI SoC",
+          bullets: [
+            "Ported an ASIC-targeted HyperRAM controller IP to an Artix-7 FPGA (Synplify, Vivado) to relieve the memory-bandwidth bottleneck of an AI SoC, resolving AXI4-to-HyperBus clock-domain crossings and tri-state I/O constraints; validated transactions on hardware with ILA.",
+            "Integrated peripheral subsystems into a RISC-V AI SoC (clock/reset manager, AXI-to-APB bridges) and verified SPI microSD bring-up, DMA memory transfers, and PLIC/CLINT interrupt routing with bare-metal C tests.",
+          ],
+          tools: ["Verilog", "Vivado + ILA", "Synplify", "RISC-V", "Bare-metal C"],
+          figure: { diagram: "soc", caption: "Blocks outlined in color are the ones I ported, integrated, or verified." },
+          specs: [
+            ["FPGA", "Xilinx Artix-7"],
+            ["Memory", "HyperRAM, ported ASIC controller"],
+            ["Buses", "AXI4, APB, HyperBus"],
+            ["Verified", "SPI microSD, DMA, PLIC/CLINT"],
+          ],
+        },
+      ],
+    },
+  ],
+
+  projects: [
+    {
+      id: "co2",
+      title: "LSTM breath detection for a self-powered CO₂ sensor node",
+      tag: "Deep learning",
+      dates: "2025 – 2026",
+      bullets: [
+        "Ported a lab NDIR capnography chain (lock-in, temperature-compensated Beer–Lambert, end-tidal detection) from MATLAB to Python and built a simulator that turns 279 recorded exhalations into the node's 2 Hz CO₂ stream.",
+        "Trained a 5,025-parameter LSTM that detected 87% of held-out walk-by exhales at 0.8 false alarms/h vs. 78% at 2.2/h for the best rule-based detector, with the gain on weak 120–250 ppm breaths (92% vs. 68%).",
+        "Showed the model held F1 at 0.87 in an unseen 2,000 ppm room and would cost only 0.2–0.5% of the node's awake power, so inference can run on the sensor instead of a host.",
+      ],
+      tools: ["Python", "Keras", "NumPy", "MATLAB"],
+      figure: {
+        chart: {
+          type: "bars", yMax: 100, yStep: 25, yUnit: "%",
+          xTitle: "breath rise at the node (ppm)",
+          categories: ["60–120", "120–250", "250–500", "500–1k", "1k–1.5k"],
+          series: [
+            { name: "LSTM", values: [38.9, 92.3, 100, 100, 100], tone: "accent" },
+            { name: "Adaptive baseline", values: [15.6, 68.3, 100, 100, 100], tone: "bar2" },
+            { name: "Fixed threshold", values: [10.0, 25.0, 50.0, 84.8, 100], tone: "bar3" },
+          ],
+          highlight: { index: 1, label: "weak breaths" },
+        },
+        caption: "Share of held-out walk-by exhales detected, by breath strength. Every detector's threshold was set on validation data for at most 2 false alarms per hour.",
+      },
+      specs: [
+        ["Input", "2 Hz CO₂, 10 s windows"],
+        ["Model", "LSTM 32 → Dense 16 → 1"],
+        ["Parameters", "5,025"],
+        ["Walk-by recall", "87% at 0.8 false alarms/h"],
+        ["Best rule-based", "78% at 2.2 false alarms/h"],
+        ["Unseen 2,000 ppm room", "F1 0.87"],
+        ["On-node cost", "0.2–0.5% of awake power"],
+      ],
+      specNote: "Node streams simulated from 279 recorded exhalations.",
+    },
+    {
+      id: "tinyml",
+      title: "TinyML wake-word detection on a Raspberry Pi",
+      tag: "On-device AI",
+      dates: "Sep. – Dec. 2025",
+      bullets: [
+        "Built an end-to-end wake-word pipeline (voice activity detection, MFCC, CNN) at 92.7% validation accuracy and tuned real-time streaming detection to a 90% hit rate with few false triggers.",
+        "Found that INT8 quantization cut the model size by ~40% but stalled the speedup on the CPU (unpacking overhead), showing that software compression alone hits a wall without matching hardware.",
+      ],
+      tools: ["TensorFlow Lite", "Raspberry Pi", "Python"],
+      specs: [
+        ["Features", "MFCC from 16 kHz audio, VAD"],
+        ["Model", "CNN, INT8 (~40% smaller)"],
+        ["Accuracy", "92.7% (validation)"],
+        ["Streaming", "90% hit rate (threshold 0.8, 4 frames)"],
+      ],
+    },
+  ],
+
+  publications: [
+    {
+      key: "C1",
+      authors: "**D. J. Lee**, W. Youn, and M. Je",
+      title: "A Quad-Channel Simultaneous-Sampling CDC Based on a Quadrature-Phase Swing-Boosted RC Oscillator",
+      venue: "IEIE Fall Conference 2026, Undergraduate Paper Competition",
+      date: "Nov. 2026",
+      status: "Accepted",
+    },
+    {
+      key: "P1",
+      authors: "**D. J. Lee**, A. Ortega, H. Schulz-Hildebrandt, B. Davis, and G. J. Tearney",
+      title: "Circumferential Scanning µOCT Probe for Real-Time Guidance in Deep Brain Stimulation",
+      venue: "Poster, HST-Wellman Summer Institute for Biomedical Optics, Boston, MA",
+      date: "Aug. 2026",
+      status: "Presented",
+    },
+  ],
+
+  news: [
+    { date: "Oct. 2026", text: "My B.S. thesis paper on a quad-channel CDC was accepted by the IEIE Fall Conference 2026." },
+    { date: "Aug. 2026", text: "Presented a poster on the circumferential-scanning µOCT probe at the HST-Wellman Summer Institute, Boston." },
+    { date: "Jun. 2026", text: "Joined the Tearney Lab at Massachusetts General Hospital as a summer research intern." },
+    { date: "Jan. 2026", text: "Joined Prof. Minkyu Je's IMPACT Lab at KAIST as an undergraduate researcher." },
+    { date: "Oct. 2025", text: "Started a research internship at the KAIST AI-PIM Semiconductor Design Research Center." },
+  ],
+
+  about: {
+    title: "About me",
+    paragraphs: [
+      "I grew up in the U.S. and moved to Korea at ten, which made me curious about how large systems work. A volunteer trip to Myanmar with Scientists and Engineers Without Borders, where our team installed solar power and water treatment systems at rural schools, turned that curiosity toward engineering. It also gave me a lasting direction: use engineering to make real-world impact.",
+      "At KAIST I moved step by step toward the physical world, from ML algorithms to on-device AI, hardware architecture, integrated circuits, and sensor devices. I paused my studies to serve in the Republic of Korea Army as a squad leader and combat fitness instructor, and I am on track to graduate after three and a half years of study. My summer at MGH showed me how multidisciplinary, translational research reaches patients, and it strengthened my goal of building intelligent hardware for medicine and beyond.",
+    ],
+    how: { title: "How I work", text: "I aim for balanced designs. In my final semester at KAIST I run projects horizontally, from sensor to processor, and vertically, from application to transistor." },
+    education: [
+      { school: "Korea Advanced Institute of Science and Technology (KAIST)", degree: "B.S. in Electrical Engineering", dates: "Mar. 2022 – Feb. 2027 (expected)", detail: "GPA 3.82 / 4.30, Cum Laude. Early graduation after 3.5 years of study." },
+    ],
+    skills: [
+      ["Analog & mixed-signal", "Cadence Virtuoso, Spectre (PSS/pnoise, transient noise), Verilog-A, OCEAN"],
+      ["Digital & SoC", "Verilog, Vivado, Synplify, ILA, RISC-V SoC integration"],
+      ["ML & software", "Python (PyTorch, TensorFlow, Keras), C/C++, MATLAB"],
+      ["Lab & optics", "LCR meter, Arduino, Raspberry Pi, I²C/SPI, Zemax OpticStudio, fiber fabrication"],
+    ],
+    leadership: [
+      { what: "**Reporter**, EE Newsletter, KAIST School of Electrical Engineering", when: "Mar. 2025 – Present" },
+      { what: "**English Mentor**, KAIST Science Outreach Program (KSOP)", when: "Sep. 2025 – Jun. 2026" },
+      { what: "**KAIST Student Representative** (fully funded), ASPIRE League, Tokyo", when: "Jun. 2025" },
+      { what: "**Squad Leader & Combat Fitness Instructor**, ROK Army Capital Defense Command", when: "Aug. 2023 – Feb. 2025" },
+      { what: "**Korean Student Representative** (fully funded), KOFST Young Generation Forum", when: "Jul. 2023" },
+      { what: "**Selected Trainee**, Samsung Electronics Shining Star Program", when: "Feb. 2023" },
+      { what: "**Student Volunteer**, Scientists and Engineers Without Borders, Myanmar", when: "Jan. 2018" },
+    ],
+    honors: [
+      { what: "**Elite Soldier Award**, Republic of Korea Army", when: "2024" },
+      { what: "**KAIST Science Gifted Student Scholarship**, KAIST", when: "2021" },
+      { what: "**Dong-gu Education Foundation Scholarship**, Daegu Metropolitan City", when: "2021" },
+    ],
+  },
+
+  contact: {
+    title: "Get in touch",
+    text: "I am applying to EE PhD programs for Fall 2027 and would be glad to talk about research in your group.",
+  },
+};
+/* ===================== END OF EDITABLE CONTENT ===================== */
+</script>
+
+<script>
+/* Rendering code. You normally don't need to edit anything below.
+   To swap a built-in diagram for your own picture, set a project's figure to
+   { src: "images/your-figure.png", alt: "what it shows", caption: "..." }. */
+(function () {
+  "use strict";
+  const S = SITE;
+  const $ = (sel, root) => (root || document).querySelector(sel);
+  const show = (key) => !S.sections || S.sections[key] !== false;
+
+  function esc(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  function md(v) {
+    let h = esc(v);
+    h = h.replace(/\[([^\]]+)\]\(((?:https?:\/\/|#|mailto:)[^)\s]+|[\w./-]+)\)/g, (m, text, url) => {
+      const ext = /^https?:/.test(url);
+      return `<a href="${url}"${ext ? ' target="_blank" rel="noopener"' : ""}>${text}</a>`;
+    });
+    h = h.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/==([^=]+)==/g, "<mark>$1</mark>");
+    h = h.replace(/(^|[^*\w])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+    return h;
+  }
+  function fmt(v) {
+    if (v >= 1000) return v.toLocaleString("en-US");
+    return String(v);
+  }
+  const tone = (t) => ({ accent: "f-acc", bar2: "f-b2", bar3: "f-b3", signal: "f-sig" }[t] || "f-b2");
+
+  /* ---------- Section renderers ---------- */
+  function renderHero() {
+    const p = S.profile;
+    const links = (p.links || []).filter((l) => l && l.url)
+      .map((l) => `<a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} <span aria-hidden="true">↗</span></a>`).join("");
+    const facts = (p.facts || []).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${md(v)}</dd></div>`).join("");
+    $("#brand").textContent = p.name;
+    $("#hero").innerHTML = `
+      <div class="wrap hero-grid">
+        <div class="hero-text">
+          ${p.status ? `<p class="status"><span class="dot" aria-hidden="true"></span>${md(p.status)}</p>` : ""}
+          <h1>${esc(p.name)}</h1>
+          ${p.affiliation ? `<p class="affil">${md(p.affiliation)}</p>` : ""}
+          <p class="tagline">${md(p.tagline)}</p>
+          <p class="summary">${md(p.summary)}</p>
+          <div class="actions">
+            <button class="btn btn-primary" type="button" data-open-cv>View CV</button>
+            ${emailChip(p.email)}
+            ${links}
+          </div>
+          ${facts ? `<dl class="facts">${facts}</dl>` : ""}
+        </div>
+        ${p.photo ? `<img class="portrait" src="${esc(p.photo)}" alt="${esc(p.photoAlt || p.name)}" width="425" height="567">` : ""}
+      </div>`;
+  }
+  function emailChip(email) {
+    if (!email) return "";
+    return `<span class="email-chip"><span class="addr">${esc(email)}</span><button type="button" class="copy" data-copy="${esc(email)}">Copy email</button></span>`;
+  }
+
+  function renderHighlights() {
+    const el = $("#highlights");
+    if (!show("highlights") || !(S.highlights || []).length) { el.remove(); return; }
+    el.innerHTML = `<div class="wrap"><div class="highlights">${S.highlights.map((h) => `
+      <a class="hl" href="${esc(h.href || "#hero")}"><span class="v">${esc(h.value)}</span> <span class="u">${esc(h.unit || "")}</span><span class="l">${md(h.label)}</span></a>`).join("")}</div></div>`;
+  }
+
+  function head(o) {
+    return `<header class="section-head">
+      ${o.eyebrow ? `<p class="eyebrow">${esc(o.eyebrow)}</p>` : ""}
+      <h2>${md(o.title)}</h2>
+      ${o.lead ? `<p class="lead">${md(o.lead)}</p>` : ""}
+      ${o.intro ? `<p class="intro">${md(o.intro)}</p>` : ""}
+    </header>`;
+  }
+
+  function renderVision() {
+    const el = $("#vision"), v = S.vision;
+    if (!show("vision") || !v) { el.remove(); return; }
+    const pillars = (v.pillars || []).map((p) => `<div class="pillar"><h3>${esc(p.title)} <span>${esc(p.sub || "")}</span></h3><p>${md(p.text)}</p></div>`).join("");
+    const chart = v.chart ? `<figure class="fig"><div class="fig-scroll">${logBars(v.chart)}</div><figcaption>Source: ${v.chart.sourceUrl ? `<a href="${esc(v.chart.sourceUrl)}" target="_blank" rel="noopener">${md(v.chart.source)}</a>` : md(v.chart.source)}</figcaption></figure>` : "";
+    const stats = (v.stats || []).map((s) => `<div class="stat"><span class="num">${esc(s.value)}</span><p>${md(s.text)}</p></div>`).join("");
+    const statSrc = v.statSource ? `<p class="source">Source: ${v.statSourceUrl ? `<a href="${esc(v.statSourceUrl)}" target="_blank" rel="noopener">${md(v.statSource)}</a>` : md(v.statSource)}</p>` : "";
+    el.innerHTML = `<div class="wrap">${head(v)}<div class="vision-grid">${pillars}</div>
+      ${chart || stats ? `<div class="evidence">${chart}<div class="stats">${stats}${statSrc}</div></div>` : ""}</div>`;
+  }
+
+  function renderThread() {
+    const el = $("#thread"), t = S.thread;
+    if (!show("thread") || !t) { el.remove(); return; }
+    const stages = (t.stages || []).map((st, i) => `
+      <div class="stage">
+        <div class="stage-head"><span class="n">${i + 1}</span>${esc(st.name)}</div>
+        ${(st.cards || []).map((c) => `<a class="tcard" href="${esc(c.href || "#research")}"><span class="proj">${esc(c.project)}</span><span class="lesson">${md(c.lesson)}</span><span class="ev">${md(c.evidence)}</span></a>`).join("")}
+      </div>`).join("");
+    el.innerHTML = `<div class="wrap">${head(t)}<div class="thread">${stages}</div>
+      ${t.goal ? `<div class="goal"><div class="goal-line" aria-hidden="true"></div><p>${md(t.goal)}</p></div>` : ""}</div>`;
+  }
+
+  let figCount = 0;
+  function figureHTML(f) {
+    if (!f) return "";
+    const uid = "f" + (++figCount);
+    let inner = "";
+    if (f.diagram && DIAGRAMS[f.diagram]) inner = `<div class="fig-scroll">${DIAGRAMS[f.diagram](uid)}</div>`;
+    else if (f.chart) inner = `<div class="fig-scroll">${groupedBars(f.chart)}</div>`;
+    else if (f.src) inner = `<img src="${esc(f.src)}" alt="${esc(f.alt || "")}" loading="lazy">`;
+    if (!inner) return "";
+    return `<figure class="fig">${inner}${f.caption ? `<figcaption>${md(f.caption)}</figcaption>` : ""}</figure>`;
+  }
+  function specsHTML(p) {
+    if (!(p.specs || []).length) return "";
+    return `<div class="spec-block"><table class="specs"><caption>Key specifications</caption><tbody>${p.specs.map(([k, v]) => `<tr><th scope="row">${esc(k)}</th><td>${md(v)}</td></tr>`).join("")}</tbody></table>${p.specNote ? `<p class="spec-note">${md(p.specNote)}</p>` : ""}</div>`;
+  }
+  function projectHTML(p) {
+    const side = figureHTML(p.figure) + specsHTML(p);
+    return `<article class="project"${p.id ? ` id="${esc(p.id)}"` : ""}>
+      <div class="proj-main">
+        <h4>${md(p.title)}${p.tag ? ` <span class="tag">${esc(p.tag)}</span>` : ""}</h4>
+        ${p.dates ? `<p class="proj-dates">${esc(p.dates)}</p>` : ""}
+        <ul class="bullets">${(p.bullets || []).map((b) => `<li>${md(b)}</li>`).join("")}</ul>
+        ${(p.tools || []).length ? `<div class="tools" aria-label="Tools">${p.tools.map((t) => `<span>${esc(t)}</span>`).join("")}</div>` : ""}
+      </div>
+      ${side ? `<div class="side">${side}</div>` : ""}
+    </article>`;
+  }
+
+  function renderResearch() {
+    const el = $("#research");
+    if (!show("research") || !(S.research || []).length) { el.remove(); return; }
+    const entries = S.research.map((e) => `
+      <div class="entry">
+        <header class="entry-head">
+          <div><h3>${md(e.lab)}</h3><p class="role">${md(e.role)}${e.advisor ? ` · <span class="adv">${md(e.advisor)}</span>` : ""}</p></div>
+          <p class="when">${esc(e.dates || "")}${e.place ? `<br>${esc(e.place)}` : ""}</p>
+        </header>
+        ${(e.projects || []).map(projectHTML).join("")}
+      </div>`).join("");
+    el.innerHTML = `<div class="wrap">${head({ eyebrow: "Research experience", title: "Research" })}${entries}</div>`;
+  }
+
+  function renderProjects() {
+    const el = $("#projects");
+    if (!show("projects") || !(S.projects || []).length) { el.remove(); return; }
+    el.innerHTML = `<div class="wrap">${head({ eyebrow: "Independent and course projects", title: "Projects" })}<div class="entry">${S.projects.map(projectHTML).join("")}</div></div>`;
+  }
+
+  function renderPublications() {
+    const el = $("#publications");
+    if (!show("publications")) { el.remove(); return; }
+    const pubs = (S.publications || []).map((p) => `
+      <li class="pub"><span class="key">[${esc(p.key)}]</span><div>
+        <div class="title">${md(p.title)}${p.status ? `<span class="status-tag">${esc(p.status)}</span>` : ""}</div>
+        <div class="authors">${md(p.authors)}</div>
+        <div class="venue"><em>${md(p.venue)}</em>${p.date ? `, ${esc(p.date)}` : ""}</div>
+      </div></li>`).join("");
+    const news = (S.news || []).map((n) => `<li><time>${esc(n.date)}</time><span>${md(n.text)}</span></li>`).join("");
+    el.innerHTML = `<div class="wrap"><div class="pub-news">
+      <div><h2 class="subhead">Publications & presentations</h2><ol class="pubs">${pubs}</ol></div>
+      ${news ? `<div id="news"><h2 class="subhead">News</h2><ul class="news">${news}</ul></div>` : ""}
+    </div></div>`;
+  }
+
+  function dated(items) {
+    return `<ul class="dated">${(items || []).map((i) => `<li><span>${md(i.what)}</span><span class="d">${esc(i.when || "")}</span></li>`).join("")}</ul>`;
+  }
+  function renderAbout() {
+    const el = $("#about"), a = S.about;
+    if (!show("about") || !a) { el.remove(); return; }
+    const edu = (a.education || []).map((e) => `<div class="edu"><div class="school">${md(e.school)}</div><div class="meta">${esc(e.dates || "")}</div><p>${md(e.degree)}${e.detail ? `. ${md(e.detail)}` : ""}</p></div>`).join("");
+    const skills = (a.skills || []).length ? `<dl class="skills">${a.skills.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${md(v)}</dd></div>`).join("")}</dl>` : "";
+    el.innerHTML = `<div class="wrap">${head({ eyebrow: "Background", title: a.title || "About me" })}
+      <div class="about-grid">
+        <div class="about-text">${(a.paragraphs || []).map((p) => `<p>${md(p)}</p>`).join("")}
+          ${a.how ? `<div class="how"><h3>${esc(a.how.title)}</h3><p>${md(a.how.text)}</p></div>` : ""}
+        </div>
+        <div class="aside">
+          ${edu ? `<div class="block"><h3>Education</h3>${edu}</div>` : ""}
+          ${skills ? `<div class="block"><h3>Skills</h3>${skills}</div>` : ""}
+        </div>
+      </div>
+      <div class="lists">
+        ${(a.leadership || []).length ? `<div class="block"><h3>Leadership & service</h3>${dated(a.leadership)}</div>` : ""}
+        ${(a.honors || []).length ? `<div class="block"><h3>Honors & awards</h3>${dated(a.honors)}</div>` : ""}
+      </div></div>`;
+  }
+
+  function renderFooter() {
+    const c = S.contact || {}, p = S.profile;
+    const links = (p.links || []).filter((l) => l && l.url)
+      .map((l) => `<a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} <span aria-hidden="true">↗</span></a>`).join("");
+    $("#contact").innerHTML = `<div class="wrap footer-inner">
+      <div><h2>${esc(c.title || "Contact")}</h2>${c.text ? `<p>${md(c.text)}</p>` : ""}
+        <div class="actions">${emailChip(p.email)}<button class="btn" type="button" data-open-cv>View CV</button>${links}</div></div>
+      <p class="updated">Last updated ${esc(S.lastUpdated || "")}</p></div>`;
+  }
+
+  function renderNav() {
+    const items = [["vision", "Vision"], ["thread", "Thread"], ["research", "Research"], ["projects", "Projects"], ["publications", "Publications"], ["about", "About"], ["contact", "Contact"]]
+      .filter(([id]) => document.getElementById(id));
+    $("#nav").innerHTML = items.map(([id, label]) => `<a href="#${id}">${label}</a>`).join("");
+    if (!("IntersectionObserver" in window)) return;
+    const links = new Map(items.map(([id]) => [id, $(`#nav a[href="#${id}"]`)]));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        links.forEach((a) => a.classList.remove("active"));
+        const a = links.get(en.target.id);
+        if (a) { a.classList.add("active"); a.scrollIntoView({ block: "nearest", inline: "nearest" }); }
+      });
+    }, { rootMargin: "-40% 0px -55% 0px" });
+    links.forEach((a, id) => io.observe(document.getElementById(id)));
+  }
+
+  /* ---------- Charts ---------- */
+  function logBars(c) {
+    const W = 520, L = 128, R = 440, T = 30, rh = 28, n = c.rows.length, B = T + n * rh, H = B + 36;
+    const lo = Math.log10(c.min), hi = Math.log10(c.max);
+    const X = (v) => L + ((Math.log10(v) - lo) / (hi - lo)) * (R - L);
+    let s = `<svg viewBox="0 0 ${W} ${H}" class="dg chart" role="img" aria-label="${esc(c.title)}">`;
+    s += `<text x="0" y="14" class="ttl">${esc(c.title)}</text>`;
+    for (let e = Math.ceil(lo); e <= Math.floor(hi); e++) {
+      const v = Math.pow(10, e), x = X(v);
+      s += `<line x1="${x}" y1="${T - 4}" x2="${x}" y2="${B}" class="grid"/><text x="${x}" y="${B + 15}" text-anchor="middle" class="lbl">${fmt(+v.toPrecision(3))}</text>`;
+    }
+    s += `<text x="${(L + R) / 2}" y="${B + 31}" text-anchor="middle" class="lbl">${esc(c.unit)} per operation</text>`;
+    c.rows.forEach((r, i) => {
+      const y = T + i * rh, x = X(r.value);
+      s += `<text x="${L - 10}" y="${y + 15}" text-anchor="end">${esc(r.label)}</text>`;
+      s += `<rect x="${L}" y="${y + 4}" width="${Math.max(2, x - L)}" height="15" rx="2" class="${tone(r.tone)}"><title>${esc(r.label)}: ${fmt(r.value)} ${esc(c.unit)}</title></rect>`;
+      s += `<text x="${x + 6}" y="${y + 15}" class="val">${fmt(r.value)} ${esc(c.unit)}</text>`;
+    });
+    return s + `</svg>`;
+  }
+
+  function groupedBars(c) {
+    const W = 520, L = 40, R = 512, T = 46, B = 212, H = 262;
+    const n = c.categories.length, gw = (R - L) / n, ns = c.series.length, gap = 3;
+    const bw = Math.min(24, (gw - 20 - (ns - 1) * gap) / ns);
+    const Y = (v) => B - (v / c.yMax) * (B - T);
+    const unit = c.yUnit || "";
+    let s = `<svg viewBox="0 0 ${W} ${H}" class="dg chart" role="img" aria-label="${esc(c.ariaLabel || "Grouped bar chart")}">`;
+    let lx = L;
+    c.series.forEach((se) => {
+      s += `<rect x="${lx}" y="8" width="11" height="11" rx="2" class="${tone(se.tone)}"/><text x="${lx + 16}" y="18">${esc(se.name)}</text>`;
+      lx += 16 + se.name.length * 7.6 + 18;
+    });
+    if (c.highlight) {
+      const hx = L + c.highlight.index * gw;
+      s += `<rect x="${hx + 2}" y="${T - 16}" width="${gw - 4}" height="${B - T + 16}" rx="4" class="hl-band"/>`;
+      s += `<text x="${hx + gw / 2}" y="${T - 5}" text-anchor="middle" class="lbl">${esc(c.highlight.label)}</text>`;
+    }
+    for (let v = 0; v <= c.yMax; v += c.yStep || 25) {
+      const y = Y(v);
+      s += `<line x1="${L}" y1="${y}" x2="${R}" y2="${y}" class="${v === 0 ? "axis" : "grid"}"/><text x="${L - 6}" y="${y + 4}" text-anchor="end" class="lbl">${v}${esc(unit)}</text>`;
+    }
+    c.categories.forEach((cat, i) => {
+      const gx = L + i * gw + (gw - (ns * bw + (ns - 1) * gap)) / 2;
+      c.series.forEach((se, j) => {
+        const v = se.values[i], x = gx + j * (bw + gap), y = Y(v);
+        s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${(B - y).toFixed(1)}" rx="1.5" class="${tone(se.tone)}"><title>${esc(se.name)}, ${esc(cat)}: ${v}${esc(unit)}</title></rect>`;
+        if (c.highlight && c.highlight.index === i) s += `<text x="${(x + bw / 2).toFixed(1)}" y="${(y - 5).toFixed(1)}" text-anchor="middle" class="val">${Math.round(v)}</text>`;
+      });
+      s += `<text x="${L + i * gw + gw / 2}" y="${B + 16}" text-anchor="middle" class="lbl">${esc(cat)}</text>`;
+    });
+    if (c.xTitle) s += `<text x="${(L + R) / 2}" y="${B + 38}" text-anchor="middle" class="lbl">${esc(c.xTitle)}</text>`;
+    return s + `</svg>`;
+  }
+
+  /* ---------- Built-in diagrams (simplified concept drawings) ---------- */
+  const defs = (id) => `<defs><marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>`;
+  const DIAGRAMS = {
+    cdc(uid) {
+      const a = "ah-" + uid, W = 520, H = 300, bw = 112, by = 28, bh = 58;
+      const xs = [10, 136, 262, 388], ph = ["0°", "45°", "90°", "135°"];
+      let s = `<svg viewBox="0 0 ${W} ${H}" class="dg" role="img" aria-label="Concept of the quad-channel CDC: four oscillator cells in a ring, each with one sensor capacitor, and the eight timing windows per period that the sensors set">${defs(a)}`;
+      s += `<text x="10" y="16" class="lbl">QSB relaxation oscillator: four cells in a ring</text>`;
+      xs.forEach((x, i) => {
+        const k = i + 1;
+        s += `<rect x="${x}" y="${by}" width="${bw}" height="${bh}" rx="6" class="box"/>`;
+        s += `<text x="${x + 10}" y="${by + 18}" class="strong">Cell ${k}</text><text x="${x + bw - 10}" y="${by + 18}" text-anchor="end" class="lbl">${ph[i]}</text>`;
+        s += `<line x1="${x + 12}" y1="${by + 39}" x2="${x + 23}" y2="${by + 39}" class="wire"/><line x1="${x + 31}" y1="${by + 39}" x2="${x + 42}" y2="${by + 39}" class="wire"/>`;
+        s += `<line x1="${x + 23}" y1="${by + 29}" x2="${x + 23}" y2="${by + 49}" class="cap s${k}"/><line x1="${x + 31}" y1="${by + 29}" x2="${x + 31}" y2="${by + 49}" class="cap s${k}"/>`;
+        s += `<text x="${x + 50}" y="${by + 43}" class="k${k}" font-weight="500">C<tspan font-size="8" dy="3">S${k}</tspan></text>`;
+        if (i < 3) s += `<line x1="${x + bw + 1}" y1="${by + bh / 2}" x2="${xs[i + 1] - 2}" y2="${by + bh / 2}" class="wire" marker-end="url(#${a})"/>`;
+      });
+      const fy = by + bh + 18;
+      s += `<path d="M${xs[3] + bw},${by + bh / 2} H${W - 3} V${fy} H4 V${by + bh / 2} H8" class="wire" marker-end="url(#${a})"/>`;
+      s += `<text x="${W / 2}" y="${fy - 5}" text-anchor="middle" class="lbl">inverted feedback</text>`;
+      const X0 = 90, P = 400, st = P / 8, top = 128, rh = 26, amp = 14;
+      for (let j = 0; j <= 8; j++) s += `<line x1="${X0 + j * st}" y1="${top}" x2="${X0 + j * st}" y2="${top + 108}" class="guide"/>`;
+      for (let k = 0; k < 4; k++) {
+        const yb = top + 22 + k * rh, yh = yb - amp, r = X0 + k * st, f = r + P / 2;
+        s += `<text x="10" y="${yb - 2}" class="lbl">φ ${ph[k]}</text>`;
+        s += `<path d="M${X0 - 12},${yb} H${r} V${yh} H${f} V${yb} H${X0 + P}" class="sig"/>`;
+      }
+      const wy = top + 114;
+      s += `<text x="10" y="${wy + 13}" class="lbl">windows</text>`;
+      for (let j = 0; j < 8; j++) {
+        const k = (j % 4) + 1, x = X0 + j * st;
+        s += `<rect x="${x + 1}" y="${wy}" width="${st - 2}" height="18" rx="2" class="k${k}"/><text x="${x + st / 2}" y="${wy + 13}" text-anchor="middle" class="on">t${k}</text>`;
+      }
+      const ty = wy + 32;
+      s += `<path d="M${X0},${ty - 5} V${ty} H${X0 + P} V${ty - 5}" class="wire"/>`;
+      s += `<text x="${X0 + P / 2}" y="${ty + 16}" text-anchor="middle" class="lbl">one period T ≈ 372 ns at 200 fF · each window ≈ T/8</text>`;
+      return s + `</svg>`;
+    },
+
+    iongel(uid) {
+      const a = "ah-" + uid, W = 520, H = 262;
+      let s = `<svg viewBox="0 0 ${W} ${H}" class="dg" role="img" aria-label="Ion-gel array readout chain: array, two multiplexers, PCap04 converter, Arduino, Python host, and a live 3 by 3 capacitance map">${defs(a)}`;
+      const gx = 12, gy = 34, n = 10, sp = 11;
+      s += `<text x="${gx}" y="20" class="lbl">10 × 10 ion-gel array</text>`;
+      for (let i = 0; i < n; i++) s += `<line x1="${gx}" y1="${gy + i * sp + 5}" x2="${gx + n * sp}" y2="${gy + i * sp + 5}" class="row"/>`;
+      for (let j = 0; j < n; j++) s += `<line x1="${gx + j * sp + 5}" y1="${gy}" x2="${gx + j * sp + 5}" y2="${gy + n * sp}" class="col"/>`;
+      for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) s += `<circle cx="${gx + j * sp + 5}" cy="${gy + i * sp + 5}" r="1.4" class="dot"/>`;
+      s += `<text x="144" y="35" class="lbl">2 × 16:1 MUX</text>`;
+      s += `<polygon points="150,40 176,50 176,78 150,88" class="mux"/><polygon points="150,100 176,110 176,138 150,148" class="mux"/>`;
+      s += `<line x1="${gx + n * sp}" y1="64" x2="149" y2="64" class="wire"/><line x1="${gx + n * sp}" y1="124" x2="149" y2="124" class="wire"/>`;
+      s += `<path d="M176,64 H190 V84 H202" class="wire" marker-end="url(#${a})"/><path d="M176,124 H190 V104 H202" class="wire" marker-end="url(#${a})"/>`;
+      const box = (x, t1, t2, cls) => `<rect x="${x}" y="66" width="84" height="56" rx="6" class="${cls || "box"}"/><text x="${x + 42}" y="90" text-anchor="middle" class="strong">${t1}</text><text x="${x + 42}" y="106" text-anchor="middle" class="lbl">${t2}</text>`;
+      s += box(204, "PCap04", "CDC", "box-acc") + box(312, "Arduino", "controller") + box(420, "Python", "host");
+      s += `<line x1="288" y1="94" x2="310" y2="94" class="wire" marker-end="url(#${a})"/><text x="299" y="86" text-anchor="middle" class="lbl">I²C</text>`;
+      s += `<line x1="396" y1="94" x2="418" y2="94" class="wire" marker-end="url(#${a})"/>`;
+      s += `<text x="204" y="146" class="lbl">discharge resistor</text><text x="204" y="162" class="acc">10 kΩ → 180 kΩ</text><text x="204" y="178" class="lbl">pressure response ≈ 2×</text>`;
+      s += `<text x="12" y="168" class="lbl">LCR sweep: response</text><text x="12" y="182" class="lbl">at 100 Hz–1 kHz,</text><text x="12" y="196" class="lbl">gone by 1 MHz</text>`;
+      const vals = [[6.34, 6.55, 7.08], [11.92, 11.93, 14.3], [32.0, 28.68, 29.08]], cx0 = 418, cy0 = 146, cs = 30, vmin = 5, vmax = 32;
+      s += `<line x1="462" y1="124" x2="462" y2="${cy0 - 3}" class="wire" marker-end="url(#${a})"/>`;
+      vals.forEach((row, r) => row.forEach((v, c) => {
+        const pct = Math.round(15 + 85 * Math.min(1, Math.max(0, (v - vmin) / (vmax - vmin))));
+        s += `<rect x="${cx0 + c * cs}" y="${cy0 + r * cs}" width="${cs - 2}" height="${cs - 2}" rx="2" style="fill:color-mix(in oklab, var(--accent) ${pct}%, var(--paper))"/>`;
+        s += `<text x="${cx0 + c * cs + (cs - 2) / 2}" y="${cy0 + r * cs + 18}" text-anchor="middle" font-size="10"${pct > 55 ? ' class="on"' : ""}>${v.toFixed(1)}</text>`;
+      }));
+      s += `<text x="${cx0 + 3 * cs - 2}" y="${cy0 + 3 * cs + 16}" text-anchor="end" class="lbl">live ΔC map (pF), 7.7 frames/s</text>`;
+      return s + `</svg>`;
+    },
+
+    uoct(uid) {
+      const a = "ah-" + uid, W = 520, H = 230;
+      let s = `<svg viewBox="0 0 ${W} ${H}" class="dg" role="img" aria-label="Probe concept: a stationary fiber core inside a rotating sheath, with a spinning elliptical mirror that sends a focused beam sideways into tissue">${defs(a)}`;
+      s += `<rect x="300" y="168" width="220" height="56" class="tissue"/><text x="512" y="216" text-anchor="end" class="lbl">tissue</text>`;
+      s += `<rect x="22" y="70" width="64" height="66" rx="6" class="motor"/>`;
+      s += `<text x="22" y="152" class="lbl">hollow-shaft</text><text x="22" y="166" class="lbl">stepper motor</text>`;
+      s += `<rect x="110" y="82" width="360" height="42" rx="10" class="tube"/>`;
+      s += `<line x1="4" y1="103" x2="392" y2="103" class="fiber"/><rect x="352" y="99" width="40" height="8" rx="2" class="mmf"/>`;
+      s += `<path d="M195.5,78.8 A9,28 0 1,0 204.5,78.8" class="wire" marker-end="url(#${a})"/><text x="200" y="66" text-anchor="middle" class="strong">360°</text>`;
+      s += `<polygon points="392,101 424,94 432,107 392,105" class="beam"/>`;
+      s += `<path d="M416,86 Q434,94 444,118" class="mirror"/>`;
+      s += `<polygon points="423,104 439,100 432,186 430,186" class="beam"/><circle cx="431" cy="186" r="2.6" class="dot"/>`;
+      s += `<path d="M437,176 h5 M439.5,176 V196 M437,196 h5" class="wire"/>`;
+      s += `<text x="420" y="186" text-anchor="end" class="strong">6–8 µm spot</text><text x="420" y="201" text-anchor="end" class="lbl">~200 µm DOF</text>`;
+      s += `<text x="470" y="72" text-anchor="end" class="lbl">rotating elliptical mirror</text>`;
+      s += `<text x="120" y="144" class="lbl">stationary fiber core (SMF → MMF, EDOF)</text>`;
+      s += `<text x="120" y="160" class="strong">fiber never turns: no rotary joint</text>`;
+      return s + `</svg>`;
+    },
+
+    soc(uid) {
+      const a = "ah-" + uid, W = 520, H = 236;
+      let s = `<svg viewBox="0 0 ${W} ${H}" class="dg" role="img" aria-label="AI SoC block diagram: RISC-V core, DMA and HyperRAM controller on an AXI4 bus, an AXI-to-APB bridge, and APB peripherals">${defs(a)}`;
+      const blk = (x, y, w, h, t1, t2, acc) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" class="${acc ? "box-acc" : "box"}"/><text x="${x + w / 2}" y="${y + (t2 ? h / 2 - 2 : h / 2 + 4)}" text-anchor="middle" class="strong">${t1}</text>${t2 ? `<text x="${x + w / 2}" y="${y + h / 2 + 12}" text-anchor="middle" class="lbl">${t2}</text>` : ""}`;
+      s += blk(16, 24, 110, 44, "RISC-V core") + blk(142, 24, 80, 44, "DMA", "", true) + blk(238, 24, 142, 44, "HyperRAM ctrl", "ASIC IP → Artix-7", true) + blk(446, 24, 66, 44, "HyperRAM");
+      s += `<line x1="381" y1="46" x2="444" y2="46" class="wire" marker-start="url(#${a})" marker-end="url(#${a})"/><text x="413" y="39" text-anchor="middle" class="lbl">HyperBus</text>`;
+      s += `<line x1="372" y1="16" x2="372" y2="78" class="xing"/><text x="388" y="84" class="xing-t">clock-domain</text><text x="388" y="97" class="xing-t">crossing</text>`;
+      s += `<line x1="16" y1="104" x2="388" y2="104" class="bus"/><text x="16" y="122" class="lbl">AXI4</text>`;
+      [71, 182, 309].forEach((x) => { s += `<line x1="${x}" y1="68" x2="${x}" y2="102" class="wire"/>`; });
+      s += blk(200, 128, 122, 36, "AXI → APB", "", true);
+      s += `<line x1="261" y1="106" x2="261" y2="128" class="wire"/><line x1="261" y1="164" x2="261" y2="182" class="wire"/>`;
+      s += `<line x1="16" y1="184" x2="504" y2="184" class="bus"/><text x="504" y="178" text-anchor="end" class="lbl">APB</text>`;
+      const per = [[16, "SPI · microSD"], [140, "PLIC / CLINT"], [264, "clock & reset"], [388, "system control"]];
+      per.forEach(([x, t]) => { s += `<line x1="${x + 58}" y1="186" x2="${x + 58}" y2="198" class="wire"/>` + blk(x, 198, 116, 30, t, "", true); });
+      return s + `</svg>`;
+    },
+  };
+
+  /* ---------- CV viewer, copy buttons, downloads ---------- */
+  let lastFocus = null;
+  function openCV() {
+    const cv = S.cv || {};
+    if (!(cv.pages || []).length && cv.externalUrl) { window.open(cv.externalUrl, "_blank", "noopener"); return; }
+    const pages = $("#cv-pages");
+    if (!pages.childElementCount) pages.innerHTML = (cv.pages || []).map((src, i) => `<img src="${esc(src)}" alt="CV page ${i + 1}" width="1275" height="1650">`).join("");
+    lastFocus = document.activeElement;
+    $("#cv-overlay").hidden = false;
+    document.body.classList.add("cv-open");
+    $("#cv-close").focus();
+  }
+  function closeCV() {
+    $("#cv-overlay").hidden = true;
+    document.body.classList.remove("cv-open");
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  function setStatus(t) { $("#cv-status").textContent = t; }
+  async function copy(btn) {
+    const text = btn.getAttribute("data-copy"), label = btn.textContent;
+    try { await navigator.clipboard.writeText(text); btn.textContent = "Copied"; }
+    catch (e) {
+      const addr = btn.parentElement.querySelector(".addr");
+      if (addr) { const r = document.createRange(); r.selectNodeContents(addr); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); }
+      btn.textContent = "Selected, press Ctrl+C";
+    }
+    setTimeout(() => { btn.textContent = label; }, 1800);
+  }
+  document.addEventListener("click", (e) => {
+    const t = e.target;
+    if (t.closest("[data-open-cv]")) { e.preventDefault(); openCV(); return; }
+    if (t.closest("[data-close-cv]") || t === $("#cv-overlay")) { closeCV(); return; }
+    const c = t.closest("[data-copy]");
+    if (c) copy(c);
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#cv-overlay").hidden) closeCV(); });
+
+  let downloadsReady = false;
+  async function initCvActions() {
+    const cv = S.cv || {}, save = $("#cv-save"), open = $("#cv-open");
+    const inViewer = !!(window.claude && typeof window.claude.use === "function");
+    if (cv.externalUrl) { open.href = cv.externalUrl; open.hidden = false; }
+    else if (!inViewer && cv.pdf) { open.href = cv.pdf; open.hidden = false; }
+    if (!inViewer || !cv.pdf || downloadsReady) return;
+    downloadsReady = true;
+    let dl = null;
+    try { dl = await window.claude.use("downloads"); } catch (e) { dl = null; }
+    if (!dl) return;
+    if (!cv.externalUrl) open.hidden = true;
+    save.hidden = false;
+    save.addEventListener("click", async () => {
+      setStatus("Preparing…");
+      try {
+        const res = await fetch(cv.pdf);
+        if (!res.ok) throw { code: "fetch_failed" };
+        await dl.save({ filename: cv.filename || "CV.pdf", data: await res.blob() });
+        setStatus("Saved");
+      } catch (err) {
+        const code = err && err.code;
+        if (code === "declined") setStatus("");
+        else if (code === "rate_limited") setStatus("Try again in a moment.");
+        else if (["unavailable", "not_granted", "capability_disabled", "capability_removed"].includes(code)) { save.hidden = true; setStatus("Saving isn't available here."); }
+        else setStatus("The PDF couldn't be saved.");
+      }
+    });
+  }
+
+  /* ---------- Boot ---------- */
+  renderHero();
+  renderHighlights();
+  renderVision();
+  renderThread();
+  renderResearch();
+  renderProjects();
+  renderPublications();
+  renderAbout();
+  renderFooter();
+  renderNav();
+  initCvActions();
+  window.addEventListener("load", initCvActions);
+})();
+</script>
+</body>
+</html>
