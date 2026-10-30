@@ -287,16 +287,19 @@ figure{margin:0}
 .aside{display:grid;gap:26px;min-width:0}
 .block h3{font-family:var(--f-mono);font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 .edu{border-top:1.5px solid var(--ink);padding-top:10px}
+.edu + .edu{border-top:1px solid var(--rule);margin-top:10px}
 .edu .school{color:var(--ink);font-weight:600}
 .edu .meta{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);margin-top:2px}
 .edu p{font-size:.92rem;margin-top:6px}
 .skills{margin:0;display:grid;gap:10px}
 .skills div{border-top:1px solid var(--rule);padding-top:8px}
+.skills div:first-child{border-top:1.5px solid var(--ink);padding-top:10px}
 .skills dt{font-weight:600;color:var(--ink);font-size:.9rem}
-.skills dd{margin:2px 0 0;font-size:.88rem;color:var(--text)}
+.skills dd{margin:2px 0 0;font-size:.88rem;color:var(--text);white-space:pre-line}
 .lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:44px;margin-top:48px}
 .dated{list-style:none;margin:0;padding:0}
 .dated li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:9px 0;border-top:1px solid var(--rule);font-size:.92rem;line-height:1.45}
+.dated li:first-child{border-top:1.5px solid var(--ink)}
 .dated li:last-child{border-bottom:1px solid var(--rule)}
 .dated .d{font-family:var(--f-mono);font-size:.76rem;color:var(--muted);white-space:nowrap;flex:none}
 .dated strong{color:var(--ink);font-weight:600}
@@ -699,10 +702,10 @@ const SITE = {
       { school: "Korea Advanced Institute of Science and Technology (KAIST)", degree: "B.S. in Electrical Engineering", dates: "Mar. 2022 – Feb. 2027 (expected)", detail: "GPA 3.82 / 4.30, Cum Laude. Early graduation after 3.5 years of study." },
     ],
     skills: [
-      ["HW", "Embedded Systems (Raspberry Pi, Arduino), Digital SoC Design (Xilinx Vivado, Verilog), Analog Circuit Design (Cadence Virtuoso), Optical Design (Zemax OpticStudio)"],
+      ["HW", "Embedded Systems (Raspberry Pi, Arduino)\nDigital SoC Design (Xilinx Vivado, Verilog)\nAnalog Circuit Design (Cadence Virtuoso)\nOptical Design (Zemax OpticStudio)"],
       ["SW", "ML (PyTorch, TensorFlow), C/C++, Python, MATLAB"],
       ["Certificate", "Computer Utilization, Korea Chamber of Commerce and Industry"],
-      ["Languages", "English (Native; TOEFL 118/120, TOEIC 990/990, OPIc AL), Korean (Native), French (A2)"],
+      ["Languages", "English (Native; TOEFL 118/120, TOEIC 990/990, OPIc AL)\nKorean (Native)\nFrench (A2)"],
     ],
     leadership: [
       { what: "**Reporter**, EE Newsletter, KAIST School of Electrical Engineering", when: "Mar. 2025 – Present" },
