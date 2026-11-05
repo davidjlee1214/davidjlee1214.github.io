@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>David Jeehwan Lee</title>
-<meta name="description" content="David Jeehwan Lee, KAIST electrical engineering senior applying to EE PhD programs. Near-sensor AI hardware: sensor interface ICs, time-domain data conversion, and energy-efficient inference.">
+<meta name="description" content="David Jeehwan Lee, KAIST electrical engineering senior applying to EE PhD programs. Circuits for edge intelligence: sensor interface ICs for physical AI, data converters for bio and sensor readout, and process-/compute-in-memory.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap">
@@ -89,7 +89,9 @@ mark{color:inherit;background-color:transparent;background-image:linear-gradient
 .nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;justify-content:flex-end}
 .nav::-webkit-scrollbar{display:none}
 .nav a{font-size:.875rem;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:6px;white-space:nowrap}
-.nav a:hover,.nav a.active{color:var(--ink);background:var(--surface)}
+.nav a{transition:background-color .15s,color .15s}
+.nav a:hover{color:var(--ink);background:var(--surface-2)}
+.nav a.active,.nav a.active:hover{color:var(--paper);background:var(--ink);font-weight:500}
 @media (max-width:640px){.brand{display:none}.nav{justify-content:flex-start}}
 
 /* Hero */
@@ -122,7 +124,11 @@ mark{color:inherit;background-color:transparent;background-image:linear-gradient
 
 /* Sections */
 .section{padding-block:clamp(52px,7vw,88px);scroll-margin-top:56px}
-.section + .section{border-top:1px solid var(--rule)}
+.section + .section{border-top:1px solid var(--rule-strong)}
+/* Every other section sits on a tinted band so section boundaries read at a glance.
+   Cards that normally use the tint switch to the page color inside a band. */
+.section.alt{background:var(--surface)}
+.section.alt .tcard,.section.alt .fig,.section.alt .stat,.section.alt .how,.section.alt .tools span,.section.alt .figtab:not([aria-selected="true"]){background:var(--paper)}
 .section-head{display:grid;gap:8px;margin-bottom:32px;max-width:72ch}
 .section-head h2{font-family:var(--f-display);font-weight:600;font-size:clamp(1.65rem,3vw,2.2rem);line-height:1.15;color:var(--ink);margin:0}
 .section-head .lead{font-family:var(--f-display);font-size:clamp(1.15rem,2vw,1.35rem);line-height:1.4;color:var(--ink)}
@@ -199,6 +205,7 @@ figure{margin:0}
 .project.wide .side{grid-column:2;grid-row:1}
 .wide-figs{grid-column:1/-1;min-width:0}
 @media (max-width:900px){.project.wide .side{grid-column:auto;grid-row:auto}}
+.figset{min-width:0}
 .figtabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .figtab{font:500 .82rem/1 var(--f-body);padding:7px 13px;border-radius:999px;border:1px solid var(--rule-strong);background:var(--paper);color:var(--muted);cursor:pointer}
 .figtab:hover{color:var(--ink);border-color:var(--accent)}
@@ -211,6 +218,33 @@ figure{margin:0}
 .zoom-body{overflow:auto;background:var(--sheet)}
 .zoom-body img{display:block;width:100%;min-width:900px;height:auto}
 @media (max-width:640px){.entry-head .when{text-align:left}}
+/* Bench galleries: photos, CAD, simulations and measurements from each project.
+   Images in one row share a height; each row fills the width up to --gal-h tall. */
+.gallery{grid-column:1/-1;min-width:0;--gal-h:300px;--gal-gap:12px}
+.gal-head{display:flex;align-items:center;gap:12px;margin:0 0 12px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.gal-head::after{content:"";flex:1;border-top:1px solid var(--rule)}
+.gal-rows{display:grid;gap:18px}
+.gal-row{display:flex;gap:var(--gal-gap);align-items:flex-start}
+.gal-item{margin:0;min-width:0;flex:1.33 1 0%}
+.gal-btn{display:block;width:100%;padding:0;border:1px solid var(--rule);border-radius:8px;background:var(--sheet);cursor:zoom-in;overflow:hidden}
+.gal-btn img{display:block;width:100%;height:auto;transition:transform .3s ease}
+.gal-btn:hover img{transform:scale(1.025)}
+.gal-btn:hover{border-color:var(--accent)}
+.gal-item figcaption{font-size:.78rem;line-height:1.45;color:var(--muted);margin-top:7px}
+.gal-item .kind{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-right:6px;white-space:nowrap}
+.gal-item .credit{display:block;font-size:.72rem;font-style:italic;margin-top:2px}
+@media (prefers-reduced-motion:reduce){.gal-btn img{transition:none}.gal-btn:hover img{transform:none}}
+@media (max-width:640px){
+  .gal-rows{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:row dense;gap:16px 10px}
+  .gal-row{display:contents}
+  .gal-item.wide,.gal-item.solo{grid-column:1/-1}
+  .gal-item:not(.wide):not(.solo) .gal-btn img{aspect-ratio:1;object-fit:contain}
+}
+.zoom-cap{margin:0;padding:10px 16px 14px;font-size:.85rem;line-height:1.5;color:var(--muted);border-top:1px solid var(--rule)}
+.zoom-overlay.fit .zoom-panel{width:auto;max-width:100%}
+.zoom-overlay.fit .zoom-body{display:grid;place-items:center}
+.zoom-overlay.fit .zoom-body img{width:auto;min-width:0;max-width:min(1600px,calc(100vw - 48px));max-height:calc(100vh - 150px);max-height:calc(100dvh - 150px)}
+.zoom-overlay.fit .zoom-cap{contain:inline-size}
 
 /* Diagrams and charts (inline SVG, colored from the tokens) */
 .dg{font-family:var(--f-mono);font-size:12.5px}
@@ -281,7 +315,13 @@ figure{margin:0}
 
 /* About */
 .about-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:44px;align-items:start}
-.about-text{display:grid;gap:14px;max-width:66ch}
+.about-text{max-width:66ch}
+.about-text > p + p{margin-top:14px}
+.about-text .how{clear:both;margin-top:22px}
+.about-photo{float:right;width:min(42%,240px);margin:6px 0 12px 26px}
+.about-photo img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--rule);background:var(--surface)}
+.about-photo figcaption{font-size:.76rem;line-height:1.4;color:var(--muted);margin-top:6px}
+@media (max-width:560px){.about-photo{float:none;width:min(100%,320px);margin:0 0 18px}}
 .how{margin-top:8px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:16px 18px}
 .how h3{font-family:var(--f-mono);font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
 .aside{display:grid;gap:26px;min-width:0}
@@ -307,7 +347,8 @@ figure{margin:0}
 @media (max-width:480px){.dated li{flex-direction:column;gap:2px}}
 
 /* Footer */
-.footer{background:var(--surface);border-top:1px solid var(--rule)}
+.footer{background:var(--surface);border-top:1px solid var(--rule-strong)}
+.footer.on-paper{background:var(--paper)}
 .footer-inner{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;padding-block:48px 40px}
 .footer h2{font-family:var(--f-display);font-weight:600;font-size:1.6rem;color:var(--ink);margin:0 0 8px}
 .footer p{max-width:58ch}
@@ -370,6 +411,7 @@ body.cv-open{overflow:hidden}
       <button class="btn btn-small" type="button" id="zoom-close" data-close-zoom>Close</button>
     </div>
     <div class="zoom-body"><img id="zoom-img" alt=""></div>
+    <p class="zoom-cap" id="zoom-cap" hidden></p>
   </div>
 </div>
 
@@ -393,7 +435,7 @@ body.cv-open{overflow:hidden}
      **bold**   *italic*   ==highlighted==   [link text](https://example.com)
    ===================================================================== */
 const SITE = {
-  lastUpdated: "Oct. 2026",
+  lastUpdated: "Nov. 2026",
 
   sections: {
     highlights: true,
@@ -409,8 +451,8 @@ const SITE = {
     name: "David Jeehwan Lee",
     status: "Applying to EE PhD programs for Fall 2027",
     affiliation: "Electrical Engineering, KAIST · B.S. expected Feb. 2027",
-    tagline: "I design circuits and systems that let sensors deliver ==decisions, not raw data==.",
-    summary: "I am an electrical engineering senior at KAIST, graduating early in February 2027. I have built a quad-channel capacitance-to-digital converter for my B.S. thesis, a readout for flexible ion-gel sensor arrays, a 360° µOCT probe for deep brain stimulation at Massachusetts General Hospital, and FPGA prototypes of an AI SoC. In a PhD, I want to put readout, data conversion, and inference on one chip, so that only decisions leave the sensor.",
+    tagline: "I design circuits and systems that connect ==real-world signals to useful on-chip intelligence==.",
+    summary: "I am an electrical engineering senior at KAIST, graduating early in February 2027. I have built a quad-channel capacitance-to-digital converter for my B.S. thesis, a readout for flexible ion-gel sensor arrays, a 360° µOCT probe for deep brain stimulation at Massachusetts General Hospital, and FPGA prototypes of an AI SoC. In a PhD, I want to build circuits for edge intelligence: sensor interfaces, data converters, and in-memory computing that turn real-world signals into decisions on chip.",
     photo: "images/headshot.jpg",
     photoAlt: "Portrait of David Jeehwan Lee",
     email: "davidjlee@kaist.ac.kr",
@@ -420,7 +462,7 @@ const SITE = {
       // { label: "GitHub", url: "https://github.com/..." },
     ],
     facts: [
-      ["Research area", "Near-sensor AI hardware"],
+      ["Research area", "Circuits for edge intelligence"],
       ["GPA", "3.82 / 4.30, Cum Laude"],
       ["Citizenship", "U.S. and Republic of Korea"],
       ["Languages", "English and Korean, both native"],
@@ -430,7 +472,7 @@ const SITE = {
   // The CV opens in a viewer on this page. "pages" are images of each CV page.
   // To link a PDF hosted elsewhere (for example Google Drive), paste its link in externalUrl.
   cv: {
-    pages: ["cv-1.PNG", "cv-2.PNG"],
+    pages: ["cv-1.png", "cv-2.png"],
     pdf: "cv.pdf",
     filename: "David_Jeehwan_Lee_CV.pdf",
     externalUrl: "",
@@ -445,12 +487,12 @@ const SITE = {
 
   vision: {
     eyebrow: "Research vision",
-    title: "Near-sensor AI hardware",
-    lead: "Circuits and systems that let sensors deliver decisions, not raw data.",
+    title: "Circuits for edge intelligence",
+    lead: "I design circuits and systems that connect real-world signals to useful on-chip intelligence.",
     pillars: [
       { title: "Problem", sub: "why it matters", text: "Moving and converting data costs far more energy than computing on it. A DRAM access costs about 1,000× a 16-bit multiply, and the analog readout alone uses 50–75% of an image sensor's energy. The bottleneck is the boundary between sensor and compute." },
-      { title: "Approach", sub: "what I will do", text: "Near- and in-sensor computing through analog–digital co-design: readout, time-domain conversion, and inference on one chip, so only decisions leave the sensor." },
-      { title: "Application", sub: "where it is tested", text: "I treat applications as testbeds: wearable health monitors, microfluidic diagnostics, robotics, and voice interfaces." },
+      { title: "Approach", sub: "what I will do", text: "Analog–digital co-design across three thrusts: **sensor interface ICs** for physical AI, **data converters** for bio and sensor readout, and **process-/compute-in-memory**." },
+      { title: "Application", sub: "where it is tested", text: "Testbeds, not identity: wearable health monitors, microfluidic diagnostics, robotics, and voice interfaces." },
     ],
     chart: {
       title: "Energy per operation, 45-nm CMOS (log scale)",
@@ -475,8 +517,8 @@ const SITE = {
 
   thread: {
     eyebrow: "One thread",
-    title: "Every project hit the sensor‑to‑compute boundary",
-    intro: "My projects line up along the path a signal takes from the physical world to a decision. Each one taught me where that path loses energy or accuracy. Select a card to see the project.",
+    title: "From sensing to silicon intelligence",
+    intro: "My projects follow the path a signal takes from the physical world to on-chip intelligence, and each one taught me where that path loses energy or accuracy. Select a card to see the project.",
     stages: [
       { name: "Sense", cards: [
         { project: "µOCT probe · MGH", lesson: "Fix distortion at its source, not after the fact.", evidence: "Kept the fiber still and spun only the mirror: no rotational distortion or rotary-joint loss, with a 6–8 µm spot.", href: "#uoct" },
@@ -517,6 +559,7 @@ const SITE = {
           // wide: true puts the figures under the text at full width. figures: one tab per image.
           wide: true,
           figures: [
+            { label: "Concept", src: "images/cdc-concept.png", alt: "Paper Figure 1: in-line droplet sensing with four electrode pairs, conventional separate and multiplexed CDC readouts, and the proposed QSB quad-channel time-domain CDC", caption: "(a) Four electrode pairs under a microfluidic channel: droplet velocity follows from the delay between channels (v = d/Δt) and length from the pulse width (L ≈ v·w). (b) Separate CDCs cost 4× area and power, and a multiplexed CDC samples each channel at a quarter of the rate, which blurs the peak time. (c) My CDC reads all four channels in every 0.37-µs oscillator period, without a MUX." },
             { label: "Architecture", src: "images/cdc-architecture.png", alt: "Block diagram: QSB quadrature RC oscillator with four sensor cells, XOR enable generation with dither, and the gated-ring-oscillator TDC with phase latch, counters and decoder", caption: "One QSB quadrature RC oscillator holds a sensor in each cell. XOR gates turn adjacent phases into enable windows, and each channel's gated-ring-oscillator TDC (15 stages, 327 ps LSB) times its window; a phase latch and two 12-bit counters feed the decoder." },
             { label: "Timing", src: "images/cdc-timing.png", alt: "Oscillator cells and unit cell schematic, with node voltages, quadrature phases, enable, ring output, strobe and output code over one period", caption: "(a) The four cells and one unit cell. (b) Each sensor sets two windows per period (t and t′) whose length follows R times the cell capacitance (sensor + C2 + C3). EN1 runs the ring during t1, the ring holds its phase between windows, and STB1 latches it; one period is about 367 ns." },
           ],
@@ -550,6 +593,19 @@ const SITE = {
             ["Line parasitics", "~8 pF per row, calibrated out"],
             ["Live map", "7.7 frames/s"],
           ],
+          // gallery: rows of images shown under the project. Images in one row share a height.
+          // kind is the small label before the caption. ratio = width / height (optional, measured on load).
+          // maxHeight caps how tall a row may grow (default 300 px).
+          gallery: {
+            rows: [
+              [
+                { src: "images/iongel-concept.jpg", ratio: 0.685, kind: "Concept", caption: "Target use: pressure-sensing skin for a robot hand, made of layered ion-gel pixels.", alt: "Robot hand covered with sensor pads, zooming into the layered ion-gel sensor structure" },
+                { src: "images/iongel-sensor.jpg", ratio: 1.041, kind: "Device", caption: "The flexible ion-gel array and its ribbon traces.", credit: "Sensor fabricated by IOEL, KAIST.", alt: "Flexible transparent ion-gel sensor array with gold traces" },
+                { src: "images/iongel-wiring.png", ratio: 1.308, kind: "Hardware setup", caption: "Wiring I designed: an Arduino Mega picks a row and a column through two 16:1 MUXes, and the PCap04 CDC Click reads that pixel over I²C through a level shifter.", alt: "Wiring diagram: 10 by 10 sensor array, two CD74HC4067 multiplexers, Arduino Mega 2560, logic level shifter and PCap04 CDC Click board" },
+                { src: "images/iongel-setup.jpg", ratio: 1.0, kind: "My readout", caption: "The readout bench I built: Arduino, analog MUXes, and the PCap04 CDC, wired to the array.", alt: "Arduino and breadboards wired to the sensor array" },
+              ],
+            ],
+          },
         },
       ],
     },
@@ -578,6 +634,20 @@ const SITE = {
             ["Removed", "Rotational distortion, rotary-joint loss"],
             ["Prototype", "Handheld, hollow-shaft stepper motor"],
           ],
+          gallery: {
+            rows: [
+              [
+                { src: "images/uoct-dbs-targets.jpg", ratio: 1.12, kind: "Target", caption: "DBS targets deep in the brain, where electrode placement decides both efficacy and safety.", credit: "Illustration from V. Visser-Vandewalle et al., *Nature Medicine*, 2022.", alt: "Brain cross-section with DBS targets ALIC, BNST, NAc, VC/VS and STN" },
+                { src: "images/uoct-zemax.png", ratio: 2.614, kind: "Simulation", caption: "Zemax OpticStudio: ray trace through the elliptical mirror, incident flux, and the coherent irradiance map and profile at focus (~10 µm spot, ~200 µm depth of field).", alt: "Zemax ray trace, incident flux map, focal spot and irradiance profile" },
+                { src: "images/uoct-cad.jpg", ratio: 2.092, kind: "CAD", caption: "Full system CAD and a close-up of the probe: still optics core, rotating layer, and clear outer sheath.", alt: "CAD of the handheld probe with a zoomed view of the probe tip in its sheath" },
+              ],
+              [
+                { src: "images/uoct-probe-tip.jpg", ratio: 2.82, kind: "Fabricated", caption: "Microscope image of the probe: fiber optics core and 3D-printed elliptical mirror. Scale bar, 1 mm.", alt: "Microscope photo of the fiber probe with a 3D-printed mirror at the tip" },
+                { src: "images/uoct-prototype.jpg", ratio: 1.278, kind: "Prototype", caption: "The complete handheld prototype: NEMA 8 hollow-shaft stepper motor and TMCM-1141 driver board.", alt: "Handheld probe prototype with fiber connector, motor and driver board" },
+                { src: "images/uoct-measured.png", ratio: 1.643, kind: "Measured", caption: "Beam profiling. Top: the longitudinal beam profile shows the extended focus from the multi-mode fiber. Bottom: the spot size (FWHM) stays at 6–8 µm over a ~200 µm focal zone.", alt: "Longitudinal beam intensity map above a plot of FWHM spot size versus distance" },
+              ],
+            ],
+          },
         },
       ],
     },
@@ -603,6 +673,17 @@ const SITE = {
             ["Buses", "AXI4, APB, HyperBus"],
             ["Verified", "SPI microSD, DMA, PLIC/CLINT"],
           ],
+          gallery: {
+            title: "Block diagrams I drew from the RTL",
+            rows: [
+              [
+                { src: "images/soc-hyperram-ctrl.png", ratio: 1.733, kind: "HyperRAM controller", caption: "The controller IP I ported: AXI memory and register channels, their clock-domain crossings, and the HyperBus interface.", alt: "Block diagram of the rpc2_ctrl HyperRAM controller" },
+                { src: "images/soc-digitaltop.png", ratio: 1.667, kind: "SoC top", caption: "RISC-V SoC top level: CLINT, PLIC and MMIO, and the subsystem with HyperRAM, NoC control, CDMA, and the clock/reset manager.", alt: "Block diagram of the alpriscv DigitalTop and subsystem" },
+                { src: "images/soc-cdma.png", ratio: 1.994, kind: "CDMA", caption: "DMA engine: descriptor handshake, read and write state machines, and its interrupt path to the PLIC.", alt: "Block diagram of the CDMA engine with descriptor and AXI state machines" },
+                { src: "images/soc-interrupts.png", ratio: 1.722, kind: "Interrupts", caption: "Interrupt routing I verified: peripherals → crossbar → PLIC → CPU trap handler, plus CLINT timer and software interrupts.", alt: "Block diagram of peripheral interrupts, interrupt crossbar, PLIC, CLINT and CPU core" },
+              ],
+            ],
+          },
         },
       ],
     },
@@ -620,7 +701,8 @@ const SITE = {
         "Showed the model held F1 at 0.87 in an unseen 2,000 ppm room and would cost only 0.2–0.5% of the node's awake power, so inference can run on the sensor instead of a host.",
       ],
       tools: ["Python", "Keras", "NumPy", "MATLAB"],
-      figure: {
+      figures: [{
+        label: "By breath strength",
         chart: {
           type: "bars", yMax: 100, yStep: 25, yUnit: "%",
           xTitle: "breath rise at the node (ppm)",
@@ -633,6 +715,21 @@ const SITE = {
           highlight: { index: 1, label: "weak breaths" },
         },
         caption: "Share of held-out walk-by exhales detected, by breath strength. Every detector's threshold was set on validation data for at most 2 false alarms per hour.",
+      }, {
+        label: "Held-out stream",
+        src: "images/co2-stream.png",
+        alt: "Node CO2 trace, LSTM probability, and detections of three detectors over a held-out stream",
+        caption: "A held-out stream of about 7 minutes. Top: CO₂ at the node, shaded where breath reached the sensor. Middle: LSTM output. Bottom: detections, with false alarms in red. Both rule-based detectors false-alarm at the ventilation step; the LSTM does not.",
+      }],
+      gallery: {
+        title: "The node and my pipeline",
+        rows: [
+          [
+            { src: "images/co2-node-block.jpg", ratio: 1.362, kind: "Target node", caption: "The self-powered node: a TENG powers the CO₂ sensor and BLE SoC through a power-management stage.", credit: "From D. M. Tiruneh, G. Jang et al., [*Nano Energy*, 2025](https://doi.org/10.1016/j.nanoen.2025.110872).", alt: "Block diagram of the TENG-powered CO2 sensor node" },
+            { src: "images/co2-node-hw.jpg", ratio: 0.912, kind: "Node hardware", caption: "CO₂ sensor stacked on the PMIC + BLE board.", credit: "Same source.", alt: "Exploded render of the CO2 sensor on the PMIC and BLE board" },
+            { src: "images/co2-pipeline.png", ratio: 1.424, kind: "My pipeline", caption: "Recorded breaths → node simulator → 10 s windows → a 5,025-parameter LSTM.", alt: "Pipeline: real breaths, node simulator, 10 second window, LSTM" },
+          ],
+        ],
       },
       specs: [
         ["Input", "2 Hz CO₂, 10 s windows"],
@@ -655,12 +752,23 @@ const SITE = {
         "Found that INT8 quantization cut the model size by ~40% but stalled the speedup on the CPU (unpacking overhead), showing that software compression alone hits a wall without matching hardware.",
       ],
       tools: ["TensorFlow Lite", "Raspberry Pi", "Python"],
+      figure: { src: "images/tinyml-pipeline.png", label: "Concept", alt: "Four steps: listen on a microcontroller, process with TinyML, send audio to the cloud on trigger, process with a large model", caption: "Why wake words matter: the device listens with TinyML and wakes a large cloud model only on a trigger." },
       specs: [
         ["Features", "MFCC from 16 kHz audio, VAD"],
         ["Model", "CNN, INT8 (~40% smaller)"],
         ["Accuracy", "92.7% (validation)"],
         ["Streaming", "90% hit rate (threshold 0.8, 4 frames)"],
       ],
+      gallery: {
+        rows: [
+          [
+            { src: "images/tinyml-pi.jpg", ratio: 1.332, kind: "Hardware", caption: "The listening device: a Raspberry Pi Zero wired to a microphone on a breadboard.", alt: "Raspberry Pi Zero wired to a breadboard and a microphone module" },
+            { src: "images/tinyml-spectrograms.jpg", ratio: 1.259, kind: "Data", caption: "Spectrograms of recorded training clips.", alt: "Grid of nine audio spectrograms" },
+            { src: "images/tinyml-loss.png", ratio: 1.622, kind: "Training", caption: "Training and validation loss over 20 epochs.", alt: "Training and validation loss curves" },
+            { src: "images/tinyml-mae.png", ratio: 1.385, kind: "On the Pi", caption: "Float32 vs. INT8 error on the Pi for three test signals: close on sine and cosine, worse on the square wave.", alt: "Bar chart of MAE for Float32 and INT8 models on sine, cosine and square signals" },
+          ],
+        ],
+      },
     },
   ],
 
@@ -693,6 +801,8 @@ const SITE = {
 
   about: {
     title: "About me",
+    // A photo beside the paragraphs. Add a caption (for example where it was taken) or leave it empty.
+    photo: { src: "images/about.jpg", alt: "David walking along a canal lined with half-timbered houses at sunset", caption: "" },
     paragraphs: [
       "I grew up in the U.S. and moved to Korea at ten, which made me curious about how large systems work. A volunteer trip to Myanmar with Scientists and Engineers Without Borders, where our team installed solar power and water treatment systems at rural schools, turned that curiosity toward engineering. It also gave me a lasting direction: use engineering to make real-world impact.",
       "At KAIST I moved step by step toward the physical world, from ML algorithms to on-device AI, hardware architecture, integrated circuits, and sensor devices. I paused my studies to serve in the Republic of Korea Army as a squad leader and combat fitness instructor, and I am on track to graduate after three and a half years of study. My summer at MGH showed me how multidisciplinary, translational research reaches patients, and it strengthened my goal of building intelligent hardware for medicine and beyond.",
@@ -849,7 +959,9 @@ const SITE = {
     const id = "fs" + (++figCount);
     const tabs = list.length > 1 ? `<div class="figtabs" role="tablist" aria-label="Figures">${list.map((f, i) => `<button type="button" class="figtab" role="tab" id="${id}-t${i}" aria-controls="${id}-p${i}" aria-selected="${i === 0}" data-figtab="${i}">${esc(f.label || "Figure " + (i + 1))}</button>`).join("")}</div>` : "";
     const panels = list.map((f, i) => {
-      const inner = f.src ? zoomImg(f) : (f.diagram && DIAGRAMS[f.diagram] ? `<div class="fig-scroll">${DIAGRAMS[f.diagram](id + "d" + i)}</div>` : "");
+      const inner = f.src ? zoomImg(f)
+        : f.diagram && DIAGRAMS[f.diagram] ? `<div class="fig-scroll">${DIAGRAMS[f.diagram](id + "d" + i)}</div>`
+        : f.chart ? `<div class="fig-scroll">${groupedBars(f.chart)}</div>` : "";
       const hint = f.src ? ` <span class="zoom-hint">Select the image to enlarge it.</span>` : "";
       return `<figure class="fig" role="tabpanel" id="${id}-p${i}" aria-labelledby="${id}-t${i}"${i ? " hidden" : ""}>${inner}${f.caption || hint ? `<figcaption>${f.caption ? md(f.caption) : ""}${hint}</figcaption>` : ""}</figure>`;
     }).join("");
@@ -859,6 +971,56 @@ const SITE = {
     if (!(p.specs || []).length) return "";
     return `<div class="spec-block"><table class="specs"><caption>Key specifications</caption><tbody>${p.specs.map(([k, v]) => `<tr><th scope="row">${esc(k)}</th><td>${md(v)}</td></tr>`).join("")}</tbody></table>${p.specNote ? `<p class="spec-note">${md(p.specNote)}</p>` : ""}</div>`;
   }
+  /* Gallery: rows of images that share a height. ratio (width / height) is optional;
+     the page measures each image when it loads and fixes the layout if it is missing or wrong. */
+  function galleryHTML(g) {
+    if (!g) return "";
+    let rows = g.rows || [];
+    if (!rows.length && (g.items || []).length) for (let i = 0; i < g.items.length; i += 3) rows.push(g.items.slice(i, i + 3));
+    rows = rows.filter((r) => (r || []).length);
+    if (!rows.length) return "";
+    const item = (it) => {
+      const r = +it.ratio || 1.33;
+      const cap = [it.kind ? `<span class="kind">${esc(it.kind)}</span>` : "", md(it.caption || ""), it.credit ? `<span class="credit">${md(it.credit)}</span>` : ""].join("");
+      const zoomCap = [it.caption, it.credit].filter(Boolean).join(" ");
+      return `<figure class="gal-item${r >= 1.9 ? " wide" : ""}" style="flex-grow:${r}" data-r="${r}">
+        <button type="button" class="gal-btn" data-zoom="${esc(it.src)}"${r < 2.2 ? " data-zoom-fit" : ""} data-zoom-title="${esc(it.kind || "Figure")}" data-zoom-cap="${esc(zoomCap)}" aria-label="Enlarge: ${esc(it.alt || it.caption || it.kind || "image")}">
+          <img src="${esc(it.src)}" alt="${esc(it.alt || "")}" loading="lazy" decoding="async"></button>
+        ${cap ? `<figcaption>${cap}</figcaption>` : ""}
+      </figure>`;
+    };
+    const h = +g.maxHeight > 0 ? ` style="--gal-h:${+g.maxHeight}px"` : "";
+    return `<div class="gallery"${h}>
+      <p class="gal-head">${esc(g.title || "From the bench")}</p>
+      <div class="gal-rows">${rows.map((r) => `<div class="gal-row" style="${rowCap(r.map((it) => +it.ratio || 1.33))}">${r.map(item).join("")}</div>`).join("")}</div>
+    </div>`;
+  }
+  function rowCap(ratios) {
+    const sum = ratios.reduce((a, b) => a + b, 0);
+    return `max-width:calc(${sum.toFixed(3)} * var(--gal-h) + ${ratios.length - 1} * var(--gal-gap))`;
+  }
+  // On phones, narrow images pair up two per line; an odd one out gets the full width.
+  function markSolo(gal) {
+    const narrow = [...gal.querySelectorAll(".gal-item")].filter((f) => !f.classList.contains("wide"));
+    narrow.forEach((f, i) => f.classList.toggle("solo", narrow.length % 2 === 1 && i === narrow.length - 1));
+  }
+  function fitGalleries() {
+    document.querySelectorAll(".gallery").forEach(markSolo);
+    document.querySelectorAll(".gal-item img").forEach((img) => {
+      const apply = () => {
+        if (!img.naturalWidth) return;
+        const fig = img.closest(".gal-item"), r = img.naturalWidth / img.naturalHeight;
+        if (Math.abs(r - +fig.dataset.r) < 0.02) return;
+        fig.dataset.r = r; fig.style.flexGrow = r;
+        fig.classList.toggle("wide", r >= 1.9);
+        const row = fig.closest(".gal-row");
+        row.setAttribute("style", rowCap([...row.querySelectorAll(".gal-item")].map((f) => +f.dataset.r)));
+        markSolo(fig.closest(".gallery"));
+      };
+      if (img.complete) apply(); else img.addEventListener("load", apply, { once: true });
+    });
+  }
+
   function projectHTML(p) {
     const figs = (p.figures || []).length ? figureSetHTML(p.figures) : figureHTML(p.figure);
     const wide = !!(p.wide && figs);
@@ -872,6 +1034,7 @@ const SITE = {
       </div>
       ${side ? `<div class="side">${side}</div>` : ""}
       ${wide ? `<div class="wide-figs">${figs}</div>` : ""}
+      ${galleryHTML(p.gallery)}
     </article>`;
   }
 
@@ -921,7 +1084,7 @@ const SITE = {
     const skills = (a.skills || []).length ? `<dl class="skills">${a.skills.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${md(v)}</dd></div>`).join("")}</dl>` : "";
     el.innerHTML = `<div class="wrap">${head({ eyebrow: "Background", title: a.title || "About me" })}
       <div class="about-grid">
-        <div class="about-text">${(a.paragraphs || []).map((p) => `<p>${md(p)}</p>`).join("")}
+        <div class="about-text">${a.photo && a.photo.src ? `<figure class="about-photo"><img src="${esc(a.photo.src)}" alt="${esc(a.photo.alt || "")}" loading="lazy" decoding="async">${a.photo.caption ? `<figcaption>${md(a.photo.caption)}</figcaption>` : ""}</figure>` : ""}${(a.paragraphs || []).map((p) => `<p>${md(p)}</p>`).join("")}
           ${a.how ? `<div class="how"><h3>${esc(a.how.title)}</h3><p>${md(a.how.text)}</p></div>` : ""}
         </div>
         <div class="aside">
@@ -945,21 +1108,47 @@ const SITE = {
       <p class="updated">Last updated ${esc(S.lastUpdated || "")}</p></div>`;
   }
 
+  // Alternate a tinted band on every other section (skips hidden ones), and contrast the footer with the last one.
+  function stripeSections() {
+    const secs = [...document.querySelectorAll("main > .section")];
+    secs.forEach((sec, i) => sec.classList.toggle("alt", i % 2 === 1));
+    const foot = $("#contact");
+    if (foot) foot.classList.toggle("on-paper", secs.length % 2 === 0);
+  }
+
   function renderNav() {
+    const nav = $("#nav");
     const items = [["vision", "Vision"], ["thread", "Thread"], ["research", "Research"], ["projects", "Projects"], ["publications", "Publications"], ["about", "About"], ["contact", "Contact"]]
       .filter(([id]) => document.getElementById(id));
-    $("#nav").innerHTML = items.map(([id, label]) => `<a href="#${id}">${label}</a>`).join("");
-    if (!("IntersectionObserver" in window)) return;
-    const links = new Map(items.map(([id]) => [id, $(`#nav a[href="#${id}"]`)]));
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
-        if (!en.isIntersecting) return;
-        links.forEach((a) => a.classList.remove("active"));
-        const a = links.get(en.target.id);
-        if (a) { a.classList.add("active"); a.scrollIntoView({ block: "nearest", inline: "nearest" }); }
+    nav.innerHTML = items.map(([id, label]) => `<a href="#${id}">${label}</a>`).join("");
+    const links = items.map(([id]) => ({ id, a: nav.querySelector(`a[href="#${id}"]`), el: document.getElementById(id) }));
+    let current = "";
+    // The current section is the last one whose top has passed 35% of the window height.
+    const update = () => {
+      const line = window.innerHeight * 0.35;
+      let id = "";
+      links.forEach((l) => { if (l.el.getBoundingClientRect().top <= line) id = l.id; });
+      const doc = document.documentElement;
+      if (links.length && window.scrollY > 0 && window.innerHeight + window.scrollY >= doc.scrollHeight - 4) id = links[links.length - 1].id;
+      if (id === current) return;
+      current = id;
+      links.forEach((l) => {
+        const on = l.id === id;
+        l.a.classList.toggle("active", on);
+        if (on) l.a.setAttribute("aria-current", "location"); else l.a.removeAttribute("aria-current");
+        if (on) { // keep the active tab visible when the menu scrolls sideways on phones
+          const nr = nav.getBoundingClientRect(), ar = l.a.getBoundingClientRect();
+          if (ar.left < nr.left) nav.scrollLeft -= nr.left - ar.left + 8;
+          else if (ar.right > nr.right) nav.scrollLeft += ar.right - nr.right + 8;
+        }
       });
-    }, { rootMargin: "-40% 0px -55% 0px" });
-    links.forEach((a, id) => io.observe(document.getElementById(id)));
+    };
+    let ticking = false;
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); } };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    window.addEventListener("load", update);
+    update();
   }
 
   /* ---------- Charts ---------- */
@@ -1201,10 +1390,14 @@ const SITE = {
     else if (!$("#cv-overlay").hidden) closeCV();
   });
   function openZoom(btn) {
-    const img = $("#zoom-img"), inner = btn.querySelector("img");
+    const img = $("#zoom-img"), inner = btn.querySelector("img"), cap = $("#zoom-cap");
     img.src = btn.getAttribute("data-zoom");
     img.alt = inner ? inner.alt : "";
     $("#zoom-title").textContent = btn.getAttribute("data-zoom-title") || "Figure";
+    const capText = btn.getAttribute("data-zoom-cap") || "";
+    cap.innerHTML = capText ? md(capText) : "";
+    cap.hidden = !capText;
+    $("#zoom-overlay").classList.toggle("fit", btn.hasAttribute("data-zoom-fit"));
     lastFocus = btn;
     $("#zoom-overlay").hidden = false;
     document.body.classList.add("cv-open");
@@ -1256,7 +1449,9 @@ const SITE = {
   renderPublications();
   renderAbout();
   renderFooter();
+  stripeSections();
   renderNav();
+  fitGalleries();
   initCvActions();
   window.addEventListener("load", initCvActions);
 })();

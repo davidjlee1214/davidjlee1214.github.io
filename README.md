@@ -8,7 +8,9 @@ One page, no build step. Files:
 | `images/headshot.jpg` | Your photo (keep the name, or change `photo` in `SITE`). |
 | `cv.pdf` | The CV visitors can open. |
 | `cv-1.png`, `cv-2.png` | Images of each CV page, shown in the in-page viewer. |
-| `images/cdc-architecture.png`, `images/cdc-timing.png` | The two CDC figures in the IMPACT section (tabs, click to enlarge). |
+| `images/cdc-*.png` | The CDC figures in the IMPACT section (Concept, Architecture, Timing tabs). |
+| `images/iongel-*`, `uoct-*`, `soc-*`, `co2-*`, `tinyml-*` | Gallery photos, diagrams, CAD, simulations and plots under each project. |
+| `images/about.jpg` | The photo in About me (change `about.photo` in `SITE`, or delete that line to remove it). |
 
 ## Edit
 1. Open `index.html` in a text editor (VS Code, or the pencil icon on GitHub).
@@ -16,12 +18,35 @@ One page, no build step. Files:
 3. Change text inside the quotes. Formatting: `**bold**`, `*italic*`, `==highlight==`, `[text](https://...)`.
 4. Add an item by copying one `{ ... }` block and keeping the commas between blocks.
 5. Hide a section: set it to `false` under `sections`.
-6. Colors and fonts: the `:root` tokens at the top of `<style>` (light) and the two dark blocks right after.
+6. Sections alternate between the page color and a tinted band automatically, and the top menu highlights the section you are reading.
+7. Colors and fonts: the `:root` tokens at the top of `<style>` (light) and the two dark blocks right after.
 
 ## Figures
 - One image: `figure: { src: "images/file.png", caption: "..." }` (click to enlarge).
 - Several images as tabs: `figures: [ { label: "Tab name", src: "...", alt: "...", caption: "..." }, ... ]`.
+  A tab can also hold a chart (`chart: {...}`), as in the CO₂ project.
 - `wide: true` on a project puts its figures under the text at full width.
+
+## Galleries ("From the bench")
+Each project can have a `gallery` shown under it at full width:
+
+```js
+gallery: {
+  title: "From the bench",      // optional heading
+  maxHeight: 300,               // optional: tallest a row may grow, in px
+  rows: [
+    [ { src: "images/a.jpg", kind: "Prototype", caption: "...", credit: "...", alt: "..." },
+      { src: "images/b.png", kind: "Measured",  caption: "..." } ],
+    [ { src: "images/c.jpg", kind: "CAD", caption: "..." } ],
+  ],
+},
+```
+
+- Images in one row share a height and fill the width, so put 2–3 images per row.
+- `kind` is the small blue label before the caption. `credit` shows in italics (use it for figures you did not make).
+- `ratio` (width / height) is optional. The page measures each image as it loads.
+- On phones, images pair up two per line; wide images take a full line.
+- Every image opens larger when clicked, with its caption.
 
 ## Preview
 Double-click `index.html` to open it in a browser. Refresh after each save.
