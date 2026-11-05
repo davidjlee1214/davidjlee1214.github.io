@@ -472,7 +472,7 @@ const SITE = {
   // The CV opens in a viewer on this page. "pages" are images of each CV page.
   // To link a PDF hosted elsewhere (for example Google Drive), paste its link in externalUrl.
   cv: {
-    pages: ["cv-1.png", "cv-2.png"],
+    pages: ["cv-1.PNG", "cv-2.PNG"],
     pdf: "cv.pdf",
     filename: "David_Jeehwan_Lee_CV.pdf",
     externalUrl: "",
@@ -599,8 +599,8 @@ const SITE = {
           gallery: {
             rows: [
               [
-                { src: "images/iongel-concept.jpg", ratio: 0.685, kind: "Concept", caption: "Target use: pressure-sensing skin for a robot hand, made of layered ion-gel pixels.", alt: "Robot hand covered with sensor pads, zooming into the layered ion-gel sensor structure" },
-                { src: "images/iongel-sensor.jpg", ratio: 1.041, kind: "Device", caption: "The flexible ion-gel array and its ribbon traces.", credit: "Sensor fabricated by IOEL, KAIST.", alt: "Flexible transparent ion-gel sensor array with gold traces" },
+                { src: "images/iongel-concept.png", ratio: 0.685, kind: "Concept", caption: "Target use: pressure-sensing skin for a robot hand, made of layered ion-gel pixels.", alt: "Robot hand covered with sensor pads, zooming into the layered ion-gel sensor structure" },
+                { src: "images/iongel-sensor.png", ratio: 1.041, kind: "Device", caption: "The flexible ion-gel array and its ribbon traces.", credit: "Sensor fabricated by IOEL, KAIST.", alt: "Flexible transparent ion-gel sensor array with gold traces" },
                 { src: "images/iongel-wiring.png", ratio: 1.308, kind: "Hardware setup", caption: "Wiring I designed: an Arduino Mega picks a row and a column through two 16:1 MUXes, and the PCap04 CDC Click reads that pixel over I²C through a level shifter.", alt: "Wiring diagram: 10 by 10 sensor array, two CD74HC4067 multiplexers, Arduino Mega 2560, logic level shifter and PCap04 CDC Click board" },
                 { src: "images/iongel-setup.jpg", ratio: 1.0, kind: "My readout", caption: "The readout bench I built: Arduino, analog MUXes, and the PCap04 CDC, wired to the array.", alt: "Arduino and breadboards wired to the sensor array" },
               ],
@@ -677,10 +677,10 @@ const SITE = {
             title: "Block diagrams I drew from the RTL",
             rows: [
               [
-                { src: "images/soc-hyperram-ctrl.png", ratio: 1.733, kind: "HyperRAM controller", caption: "The controller IP I ported: AXI memory and register channels, their clock-domain crossings, and the HyperBus interface.", alt: "Block diagram of the rpc2_ctrl HyperRAM controller" },
-                { src: "images/soc-digitaltop.png", ratio: 1.667, kind: "SoC top", caption: "RISC-V SoC top level: CLINT, PLIC and MMIO, and the subsystem with HyperRAM, NoC control, CDMA, and the clock/reset manager.", alt: "Block diagram of the alpriscv DigitalTop and subsystem" },
-                { src: "images/soc-cdma.png", ratio: 1.994, kind: "CDMA", caption: "DMA engine: descriptor handshake, read and write state machines, and its interrupt path to the PLIC.", alt: "Block diagram of the CDMA engine with descriptor and AXI state machines" },
-                { src: "images/soc-interrupts.png", ratio: 1.722, kind: "Interrupts", caption: "Interrupt routing I verified: peripherals → crossbar → PLIC → CPU trap handler, plus CLINT timer and software interrupts.", alt: "Block diagram of peripheral interrupts, interrupt crossbar, PLIC, CLINT and CPU core" },
+                { src: "images/soc-hyperram-ctrl.PNG", ratio: 1.733, kind: "HyperRAM controller", caption: "The controller IP I ported: AXI memory and register channels, their clock-domain crossings, and the HyperBus interface.", alt: "Block diagram of the rpc2_ctrl HyperRAM controller" },
+                { src: "images/soc-digitaltop.PNG", ratio: 1.667, kind: "SoC top", caption: "RISC-V SoC top level: CLINT, PLIC and MMIO, and the subsystem with HyperRAM, NoC control, CDMA, and the clock/reset manager.", alt: "Block diagram of the alpriscv DigitalTop and subsystem" },
+                { src: "images/soc-cdma.PNG", ratio: 1.994, kind: "CDMA", caption: "DMA engine: descriptor handshake, read and write state machines, and its interrupt path to the PLIC.", alt: "Block diagram of the CDMA engine with descriptor and AXI state machines" },
+                { src: "images/soc-interrupts.PNG", ratio: 1.722, kind: "Interrupts", caption: "Interrupt routing I verified: peripherals → crossbar → PLIC → CPU trap handler, plus CLINT timer and software interrupts.", alt: "Block diagram of peripheral interrupts, interrupt crossbar, PLIC, CLINT and CPU core" },
               ],
             ],
           },
