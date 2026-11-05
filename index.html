@@ -701,8 +701,7 @@ const SITE = {
         "Showed the model held F1 at 0.87 in an unseen 2,000 ppm room and would cost only 0.2–0.5% of the node's awake power, so inference can run on the sensor instead of a host.",
       ],
       tools: ["Python", "Keras", "NumPy", "MATLAB"],
-      figures: [{
-        label: "By breath strength",
+      figure: {
         chart: {
           type: "bars", yMax: 100, yStep: 25, yUnit: "%",
           xTitle: "breath rise at the node (ppm)",
@@ -715,19 +714,15 @@ const SITE = {
           highlight: { index: 1, label: "weak breaths" },
         },
         caption: "Share of held-out walk-by exhales detected, by breath strength. Every detector's threshold was set on validation data for at most 2 false alarms per hour.",
-      }, {
-        label: "Held-out stream",
-        src: "images/co2-stream.png",
-        alt: "Node CO2 trace, LSTM probability, and detections of three detectors over a held-out stream",
-        caption: "A held-out stream of about 7 minutes. Top: CO₂ at the node, shaded where breath reached the sensor. Middle: LSTM output. Bottom: detections, with false alarms in red. Both rule-based detectors false-alarm at the ventilation step; the LSTM does not.",
-      }],
+      },
       gallery: {
-        title: "The node and my pipeline",
+        title: "The node, my pipeline, and a result",
         rows: [
           [
             { src: "images/co2-node-block.jpg", ratio: 1.362, kind: "Target node", caption: "The self-powered node: a TENG powers the CO₂ sensor and BLE SoC through a power-management stage.", credit: "From D. M. Tiruneh, G. Jang et al., [*Nano Energy*, 2025](https://doi.org/10.1016/j.nanoen.2025.110872).", alt: "Block diagram of the TENG-powered CO2 sensor node" },
             { src: "images/co2-node-hw.jpg", ratio: 0.912, kind: "Node hardware", caption: "CO₂ sensor stacked on the PMIC + BLE board.", credit: "Same source.", alt: "Exploded render of the CO2 sensor on the PMIC and BLE board" },
             { src: "images/co2-pipeline.png", ratio: 1.424, kind: "My pipeline", caption: "Recorded breaths → node simulator → 10 s windows → a 5,025-parameter LSTM.", alt: "Pipeline: real breaths, node simulator, 10 second window, LSTM" },
+            { src: "images/co2-stream.png", ratio: 1.945, kind: "Result", caption: "A held-out ~7-minute stream: node CO₂ (shaded where breath reached the sensor), LSTM output, and detections. Both rule-based detectors false-alarm (red) at the ventilation step; the LSTM does not.", alt: "Node CO2 trace, LSTM probability, and detections of three detectors over a held-out stream" },
           ],
         ],
       },
