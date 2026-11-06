@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>David Jeehwan Lee</title>
-<meta name="description" content="David Jeehwan Lee, KAIST electrical engineering senior applying to EE PhD programs. Circuits for edge intelligence: sensor interface ICs for physical AI, data converters for bio and sensor readout, and process-/compute-in-memory.">
+<meta name="description" content="David Jeehwan Lee, KAIST electrical engineering senior applying to EE PhD programs. Research vision: adaptive mixed-signal sensor interfaces for edge intelligence, where sensing, conversion and storage follow what inference needs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap">
@@ -140,13 +140,27 @@ mark{color:inherit;background-color:transparent;background-image:linear-gradient
 .pillar h3{font:600 1.05rem/1.3 var(--f-body);color:var(--ink);margin:0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .pillar h3 span{font-family:var(--f-mono);font-size:.7rem;font-weight:400;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .pillar p{margin-top:8px}
-.evidence{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;margin-top:36px;align-items:start}
-.stats{display:grid;gap:12px}
-.stat{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 16px}
-.stat .num{font-family:var(--f-mono);font-size:1.6rem;font-weight:500;color:var(--signal);white-space:nowrap}
+/* Vision: the solution diagram, then the evidence for the problem */
+.vision-fig{margin-top:40px}
+.fig-title{display:flex;align-items:center;gap:10px;margin:2px 2px 12px;font:600 1rem/1.35 var(--f-body);color:var(--ink)}
+.fig svg.loop-wide{min-width:700px}
+.fig svg.loop-narrow{display:none;min-width:0;max-width:420px;margin-inline:auto}
+@media (max-width:820px){.fig svg.loop-wide{display:none}.fig svg.loop-narrow{display:block}}
+.ev-head{display:grid;gap:6px;margin:48px 0 18px;max-width:72ch}
+.ev-head h3{font-family:var(--f-display);font-weight:600;font-size:clamp(1.25rem,2.2vw,1.5rem);line-height:1.25;color:var(--ink);margin:0}
+.ev-head .intro{color:var(--muted)}
+.ev-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+.fig svg.ev-narrow{display:none;min-width:0}
+.ev-grid .fig svg.ev-wide{max-width:600px;margin-inline:auto}
+@media (max-width:520px){.fig svg.ev-wide{display:none}.fig svg.ev-narrow{display:block}}
+.ev-n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--paper);font:500 .72rem/1 var(--f-mono);flex:none}
+.stats-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:20px}
+.stat{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start;background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 16px}
+.stat .num{font-family:var(--f-mono);font-size:1.6rem;font-weight:500;line-height:1.2;color:var(--signal);white-space:nowrap}
 .stat p{font-size:.9rem;line-height:1.45}
-.source{font-size:.78rem;color:var(--muted);line-height:1.45}
-@media (max-width:900px){.vision-grid,.evidence{grid-template-columns:1fr}}
+.stat .ev-n{width:19px;height:19px;font-size:.66rem;margin-right:3px;vertical-align:1px}
+.source{font-size:.78rem;color:var(--muted);line-height:1.45;margin-top:6px}
+@media (max-width:900px){.vision-grid,.ev-grid,.stats-row{grid-template-columns:1fr}}
 
 /* One thread */
 .thread{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
@@ -296,6 +310,20 @@ figure{margin:0}
 .dg .pf-t{font-family:var(--f-body);font-size:11px;fill:var(--text)}
 .dg .pf-h{font-family:var(--f-body);font-size:11.5px;font-weight:600;fill:var(--ink)}
 .dg .pf-i{font-family:var(--f-body);font-size:11px;font-style:italic;font-weight:600;fill:var(--ink)}
+/* Vision loop diagram and evidence charts */
+.dg .chip{fill:var(--paper);fill-opacity:.65;stroke:var(--rule-strong);stroke-width:1.2;stroke-dasharray:6 4}
+.dg .ctrl{fill:var(--paper);stroke:var(--signal);stroke-width:1.4}
+.dg .obj{fill:var(--surface-2)}
+.dg .fb{stroke:var(--signal);stroke-width:1.5;stroke-dasharray:5 4;fill:none}
+.dg .ah-sig{fill:var(--signal)}
+.dg .knob{fill:var(--signal);font-size:11px;font-weight:500}
+.dg .knob-s{fill:var(--signal);font-size:10.5px}
+.dg .sig-t{fill:var(--signal);font-weight:500}
+.dg .eyb{fill:var(--muted);font-size:10.5px;letter-spacing:.08em}
+.dg .badge{fill:var(--ink)}
+.dg text.badge-t{fill:var(--paper);font-size:10.5px;font-weight:500}
+.dg .trend{stroke:var(--accent);stroke-width:1.6;fill:none}
+.dg .ring{fill:none;stroke:var(--signal);stroke-width:1.6}
 
 /* Publications and news */
 .pub-news{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:48px}
@@ -487,32 +515,52 @@ const SITE = {
 
   vision: {
     eyebrow: "Research vision",
-    title: "Adaptive mixed-signal\nsensor interfaces for edge intelligence",
+    title: "Adaptive mixed-signal sensor interfaces for edge intelligence",
     lead: "Circuits and systems that adapt sensing effort to the information each decision requires.",
     pillars: [
-      { title: "Problem", sub: "why it matters", text: "Moving and converting data costs far more energy than computing on it. A DRAM access costs about 1,000× a 16-bit multiply, and the analog readout alone uses 50–75% of an image sensor's energy. The bottleneck is the boundary between sensor and compute." },
-      { title: "Approach", sub: "what I will do", text: "Near- and in-sensor computing through analog–digital co-design: readout, time-domain conversion, and inference on one chip, so only decisions leave the sensor." },
-      { title: "Application", sub: "where it is tested", text: "Testbeds, not identity: wearable health monitors, microfluidic diagnostics, robotics, and voice interfaces." },
+      { title: "Problem", sub: "why it matters", text: "Conventional sensor chains treat every sample alike: the front end, converter and buffer run at the precision the hardest case needs, and each block is optimized on its own. In my CO₂ breath-detection study, inference needed only 0.2–0.5% of the node's awake power, so a better model alone could not make the system efficient." },
+      { title: "Approach", sub: "what I will do", text: "Co-design sensing, conversion, memory and inference around the information a task needs. The model's confidence feeds back to set resolution, conversion time, active channels and data retention, in mixed-signal ICs built from the sensor interface up." },
+      { title: "Testbeds", sub: "where it is tested", text: "Microfluidic droplet sensing with my quad-channel converter, implantable and oscillator-based biosensors, and always-on monitoring such as breath detection and keyword spotting." },
     ],
-    chart: {
-      title: "Energy per operation, 45-nm CMOS (log scale)",
-      unit: "pJ", min: 0.1, max: 1000,
-      rows: [
-        { label: "16-bit add", value: 0.18 },
-        { label: "16-bit multiply", value: 0.62 },
-        { label: "SRAM, 4K words", value: 8 },
-        { label: "SRAM, 32K words", value: 11 },
-        { label: "DRAM access", value: 640, tone: "signal" },
-      ],
-      source: "A. Pedram et al., “Dark memory and accelerator-rich system optimization in the dark silicon era,” *IEEE Design & Test*, 2016, Table I.",
-      sourceUrl: "https://arxiv.org/abs/1602.04183",
+    // The proposed solution. It is drawn in code (DIAGRAMS.loop further down), so it follows the page colors and dark mode.
+    diagram: {
+      id: "loop",
+      title: "Task-aware sensing–inference co-design",
+      caption: "Proposed direction, not a fabricated chip. Solid lines carry the signal; dashed red lines carry feedback from inference that sets how much each stage senses, converts and stores. Numbered markers point to the evidence below.",
     },
-    stats: [
-      { value: "50–75%", text: "of an image sensor's energy goes to the analog readout, before any computation." },
-      { value: "−85%", text: "sensor energy when the first ConvNet layer moves into the analog readout." },
-    ],
-    statSource: "R. LiKamWa et al., “RedEye: Analog ConvNet image sensor architecture for continuous mobile vision,” *ISCA*, 2016.",
-    statSourceUrl: "https://meteor.ame.asu.edu/papers/likamwa2016redeye-isca.pdf",
+    // The problem, shown with data. n is the marker number in the diagram.
+    evidence: {
+      eyebrow: "Evidence",
+      title: "Why fixed effort wastes energy",
+      intro: "In my own projects and in published designs, the energy goes to sensing, conversion and storage, and each stage has an effort setting that could follow the task.",
+      charts: [
+        {
+          n: 1, kind: "waffle", title: "Inference is the cheap part",
+          aria: "Awake power of a self-powered CO₂ sensor node shown as 200 squares of 0.5% each: LSTM inference fills at most one square, and the rest of the node, mostly sensing and the radio, fills the other 199.",
+          big: "rest of the node, mostly sensing and radio", small: "LSTM inference",
+          callout: "LSTM inference: 0.2–0.5%", unit: "1 square = 0.5% of awake power",
+          caption: "My estimate for running the LSTM breath detector on a self-powered CO₂ node instead of a host. A better model alone could save at most 0.5% ([project](#co2)).",
+        },
+        {
+          n: 2, kind: "tradeoff", title: "Precision has a price",
+          aria: "Resolution against energy per conversion for one channel of the quad-channel CDC: 1.60 fF at 10 pJ (N = 1), 0.41 fF at 41 pJ (N = 4), 0.102 fF at 166 pJ (N = 16), and 0.051 fF at 331 pJ (N = 32).",
+          x: [5, 600], y: [0.03, 3], xTicks: [10, 100], yTicks: [0.1, 1],
+          xTitle: "energy per conversion, one channel (pJ)", yTitle: "resolution (fF rms)",
+          points: [
+            { n: 1, e: 10.35, r: 1.60, t: "0.37 µs", label: "N = 1", at: [8, -9, "start"] },
+            { n: 4, e: 41.4, r: 0.408, t: "1.49 µs", label: "N = 4", at: [-10, 17, "end"] },
+            { n: 16, e: 165.6, r: 0.102, t: "5.95 µs", label: "N = 16, fixed for every sample", short: "N = 16 (fixed)", fixed: true, at: [-14, 22, "end"] },
+            { n: 32, e: 331.2, r: 0.051, t: "11.9 µs", label: "N = 32", at: [10, 4, "start"] },
+          ],
+          note: { text: "4× the energy, 4× finer", short: "4× energy → 4× finer", between: [1, 2] },
+          caption: "One channel of my quad-channel CDC in schematic-level transient-noise simulation. Each oscillator period counted (N) costs about 10 pJ, before start-up overhead; lower values are finer ([project](#cdc)).",
+        },
+      ],
+      stats: [
+        { n: 3, value: "50–75%", text: "of overall energy goes to the analog readout in recent image-sensor designs, before any computation.", source: "R. LiKamWa et al., “RedEye: Analog ConvNet image sensor architecture for continuous mobile vision,” *ISCA*, 2016.", url: "https://meteor.ame.asu.edu/papers/likamwa2016redeye-isca.pdf" },
+        { n: 4, value: "79%", text: "of systolic-array scratchpad accesses touch data that lives under a microsecond. Memories matched to those lifetimes cut active energy by up to 3× and area by up to 4× versus SRAM.", source: "P. Li et al., “GainSight: A unified framework for data lifetime profiling and heterogeneous memory composition,” arXiv:2504.14866, 2025.", url: "https://arxiv.org/abs/2504.14866" },
+      ],
+    },
   },
 
   thread: {
@@ -918,11 +966,21 @@ const SITE = {
     const el = $("#vision"), v = S.vision;
     if (!show("vision") || !v) { el.remove(); return; }
     const pillars = (v.pillars || []).map((p) => `<div class="pillar"><h3>${esc(p.title)} <span>${esc(p.sub || "")}</span></h3><p>${md(p.text)}</p></div>`).join("");
-    const chart = v.chart ? `<figure class="fig"><div class="fig-scroll">${logBars(v.chart)}</div><figcaption>Source: ${v.chart.sourceUrl ? `<a href="${esc(v.chart.sourceUrl)}" target="_blank" rel="noopener">${md(v.chart.source)}</a>` : md(v.chart.source)}</figcaption></figure>` : "";
-    const stats = (v.stats || []).map((s) => `<div class="stat"><span class="num">${esc(s.value)}</span><p>${md(s.text)}</p></div>`).join("");
-    const statSrc = v.statSource ? `<p class="source">Source: ${v.statSourceUrl ? `<a href="${esc(v.statSourceUrl)}" target="_blank" rel="noopener">${md(v.statSource)}</a>` : md(v.statSource)}</p>` : "";
-    el.innerHTML = `<div class="wrap">${head(v)}<div class="vision-grid">${pillars}</div>
-      ${chart || stats ? `<div class="evidence">${chart}<div class="stats">${stats}${statSrc}</div></div>` : ""}</div>`;
+    // The proposed solution, drawn by DIAGRAMS[diagram.id].
+    const d = v.diagram;
+    const diagram = d && DIAGRAMS[d.id] ? `<figure class="fig vision-fig">${d.title ? `<p class="fig-title">${md(d.title)}</p>` : ""}<div class="fig-scroll">${DIAGRAMS[d.id]("vision")}</div>${d.caption ? `<figcaption>${md(d.caption)}</figcaption>` : ""}</figure>` : "";
+    // The evidence for the problem: numbered charts and stat cards (numbers match the diagram's markers).
+    const e = v.evidence;
+    let evidence = "";
+    if (e) {
+      const num = (n) => (n ? `<span class="ev-n">${esc(String(n))}</span>` : "");
+      const src = (o) => (o.source ? `<p class="source">Source: ${o.url ? `<a href="${esc(o.url)}" target="_blank" rel="noopener">${md(o.source)}</a>` : md(o.source)}</p>` : "");
+      const charts = (e.charts || []).filter((c) => CHARTS[c.kind]).map((c) => `<figure class="fig"><p class="fig-title">${num(c.n)}<span>${md(c.title)}</span></p><div class="fig-scroll">${CHARTS[c.kind](c, false)}${CHARTS[c.kind](c, true)}</div>${c.caption ? `<figcaption>${md(c.caption)}</figcaption>` : ""}</figure>`).join("");
+      const stats = (e.stats || []).map((s) => `<div class="stat"><span class="num">${esc(s.value)}</span><div><p>${num(s.n)} ${md(s.text)}</p>${src(s)}</div></div>`).join("");
+      evidence = `<div class="ev-head">${e.eyebrow ? `<p class="eyebrow">${esc(e.eyebrow)}</p>` : ""}<h3>${md(e.title)}</h3>${e.intro ? `<p class="intro">${md(e.intro)}</p>` : ""}</div>
+        ${charts ? `<div class="ev-grid">${charts}</div>` : ""}${stats ? `<div class="stats-row">${stats}</div>` : ""}`;
+    }
+    el.innerHTML = `<div class="wrap">${head(v)}<div class="vision-grid">${pillars}</div>${diagram}${evidence}</div>`;
   }
 
   function renderThread() {
@@ -1202,9 +1260,119 @@ const SITE = {
     return s + `</svg>`;
   }
 
+  /* Evidence charts for the research vision */
+  // Each chart is drawn twice, wide and narrow; CSS shows the narrow one on phones.
+  const CHARTS = {
+    // Waffle of 200 squares (0.5% each): where a sensor node's awake power goes.
+    waffle(c, narrow) {
+      const cols = narrow ? 20 : 25, step = narrow ? 16 : 20, cell = step - 3, W = narrow ? 340 : 520, y0 = narrow ? 44 : 30;
+      const gw = cols * step - 3, gh = (200 / cols) * step - 3, x0 = Math.round((W - gw) / 2), base = y0 + gh, H = base + (narrow ? 54 : 36);
+      let s = `<svg viewBox="0 0 ${W} ${H}" class="dg ${narrow ? "ev-narrow" : "chart ev-wide"}" role="img" aria-label="${esc(c.aria || c.title)}">`;
+      const lx = narrow ? x0 : x0 + 310, ly = narrow ? 24 : 6;
+      s += `<rect x="${x0}" y="6" width="11" height="11" rx="2" class="f-acc"/><text x="${x0 + 17}" y="16" class="lbl">${esc(c.big)}</text>`;
+      s += `<rect x="${lx}" y="${ly}" width="11" height="11" rx="2" class="f-sig"/><text x="${lx + 17}" y="${ly + 10}" class="lbl">${esc(c.small)}</text>`;
+      for (let i = 0; i < 200; i++) {
+        const x = x0 + (i % cols) * step, y = y0 + Math.floor(i / cols) * step;
+        s += `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="2" class="${i === 199 ? "f-sig" : "f-acc"}"/>`;
+      }
+      const cx = x0 + gw - cell / 2;
+      s += `<line x1="${cx}" y1="${base + 3}" x2="${cx}" y2="${base + 13}" class="xing"/>`;
+      s += `<text x="${x0 + gw}" y="${base + 27}" text-anchor="end" class="sig-t">${esc(c.callout)}</text>`;
+      s += `<text x="${x0}" y="${base + (narrow ? 47 : 27)}" class="lbl">${esc(c.unit)}</text>`;
+      return s + `</svg>`;
+    },
+    // Log-log line through simulated points: resolution against energy per conversion.
+    tradeoff(c, narrow) {
+      const W = narrow ? 340 : 520, H = narrow ? 214 : 250, L = narrow ? 50 : 56, R = narrow ? 296 : 500, T = narrow ? 16 : 18, B = narrow ? 170 : 196;
+      const lx0 = Math.log10(c.x[0]), lx1 = Math.log10(c.x[1]), ly0 = Math.log10(c.y[0]), ly1 = Math.log10(c.y[1]);
+      const X = (v) => L + ((Math.log10(v) - lx0) / (lx1 - lx0)) * (R - L);
+      const Y = (v) => B - ((Math.log10(v) - ly0) / (ly1 - ly0)) * (B - T);
+      let s = `<svg viewBox="0 0 ${W} ${H}" class="dg ${narrow ? "ev-narrow" : "chart ev-wide"}" role="img" aria-label="${esc(c.aria || c.title)}">`;
+      c.xTicks.forEach((t) => { const x = X(t).toFixed(1); s += `<line x1="${x}" y1="${T}" x2="${x}" y2="${B}" class="grid"/><text x="${x}" y="${B + 16}" text-anchor="middle" class="lbl">${t}</text>`; });
+      c.yTicks.forEach((t) => { const y = Y(t); s += `<line x1="${L}" y1="${y.toFixed(1)}" x2="${R}" y2="${y.toFixed(1)}" class="grid"/><text x="${L - 7}" y="${(y + 4).toFixed(1)}" text-anchor="end" class="lbl">${t}</text>`; });
+      s += `<line x1="${L}" y1="${B}" x2="${R}" y2="${B}" class="axis"/><line x1="${L}" y1="${T}" x2="${L}" y2="${B}" class="axis"/>`;
+      s += `<text x="${(L + R) / 2}" y="${B + 36}" text-anchor="middle" class="lbl">${esc(c.xTitle)}</text>`;
+      s += `<text transform="translate(${narrow ? 13 : 16} ${(T + B) / 2}) rotate(-90)" text-anchor="middle" class="lbl">${esc(c.yTitle)}</text>`;
+      const pts = c.points.map((p) => ({ x: X(p.e), y: Y(p.r), p }));
+      s += `<polyline points="${pts.map((q) => `${q.x.toFixed(1)},${q.y.toFixed(1)}`).join(" ")}" class="trend"/>`;
+      if (c.note && narrow) s += `<text x="${R}" y="${T + 12}" text-anchor="end" class="acc">${esc(c.note.short || c.note.text)}</text>`;
+      else if (c.note) {
+        const q0 = pts[c.note.between[0]], q1 = pts[c.note.between[1]];
+        s += `<text x="${((q0.x + q1.x) / 2 + 8).toFixed(1)}" y="${((q0.y + q1.y) / 2 - 12).toFixed(1)}" class="acc">${esc(c.note.text)}</text>`;
+      }
+      pts.forEach(({ x, y, p }) => {
+        if (p.fixed) s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="9" class="ring"/>`;
+        s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" class="k1"><title>N = ${p.n}: ${p.r} fF rms for about ${Math.round(p.e)} pJ in ${esc(p.t)}</title></circle>`;
+        const [dx, dy, anchor] = (narrow && p.atNarrow) || p.at || [9, 4, "start"];
+        s += `<text x="${(x + dx).toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${anchor}" class="${p.fixed ? "sig-t" : "val"}">${esc((narrow && p.short) || p.label)}</text>`;
+      });
+      return s + `</svg>`;
+    },
+  };
+
   /* ---------- Built-in diagrams (simplified concept drawings) ---------- */
   const defs = (id) => `<defs><marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>`;
   const DIAGRAMS = {
+    // Research vision: the proposed loop. Two drawings of the same idea; CSS shows the wide one on
+    // desktops and the tall one on phones, so the labels stay readable without sideways scrolling.
+    loop(uid) {
+      const aria = "Proposed task-aware sensing and inference loop. A sensor feeds an analog front end, a data converter, local memory and an inference engine on one near-sensor chip, and only the decision leaves the chip. The model's confidence and the task's target go to an effort controller that sets active channels, conversion time and data retention. The design objective is energy per accurate decision.";
+      const mk = (a, f) => `<defs><marker id="${a}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker><marker id="${f}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah-sig"/></marker></defs>`;
+      const box = (x, y, w, h, t1, t2, cls) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" class="${cls || "box"}"/><text x="${x + w / 2}" y="${y + h / 2 - 3}" text-anchor="middle" class="strong">${t1}</text><text x="${x + w / 2}" y="${y + h / 2 + 14}" text-anchor="middle" class="lbl">${t2}</text>`;
+      const badge = (x, y, k, r) => `<circle cx="${x}" cy="${y}" r="${r || 10}" class="badge"/><text x="${x}" y="${y + 3.6}" text-anchor="middle" class="badge-t">${k}</text>`;
+      const line = (x1, y1, x2, y2, cls, m) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${cls}" marker-end="url(#${m})"/>`;
+
+      // Wide: the signal runs left to right through the chip; the controller sits underneath.
+      let a = "la-" + uid, f = "lf-" + uid;
+      let w = `<svg viewBox="0 0 1040 418" class="dg loop-wide" role="img" aria-label="${aria}">${mk(a, f)}`;
+      w += line(24, 14, 54, 14, "wire", a) + `<text x="62" y="18" class="lbl">signal path</text>`;
+      w += line(170, 14, 200, 14, "fb", f) + `<text x="208" y="18" class="lbl">inference feedback</text>`;
+      w += badge(372, 14, 1, 8) + `<text x="386" y="18" class="lbl">evidence below</text>`;
+      w += `<rect x="190" y="38" width="700" height="296" rx="14" class="chip"/>`;
+      w += `<text x="206" y="58" class="eyb">NEAR-SENSOR CHIP</text><text x="874" y="58" text-anchor="end" class="lbl">raw samples stay on the chip</text>`;
+      w += box(24, 78, 136, 92, "Sensor", "physical signal");
+      w += box(214, 78, 152, 92, "Analog front end", "sensing precision", "box-acc");
+      w += box(390, 78, 152, 92, "Data converter", "conversion effort", "box-acc");
+      w += box(566, 78, 152, 92, "Local memory", "task-aligned buffer", "box-acc");
+      w += box(742, 78, 128, 92, "Inference", "edge model");
+      w += box(912, 78, 104, 92, "Decision", "only output");
+      [[160, 211], [366, 387], [542, 563], [718, 739], [870, 909]].forEach(([x1, x2]) => { w += line(x1, 124, x2, 124, "wire", a); });
+      w += box(24, 238, 136, 52, "Task target", "accuracy, latency") + line(160, 264, 211, 264, "wire", a);
+      w += `<rect x="214" y="238" width="504" height="52" rx="10" class="ctrl"/>`;
+      w += `<text x="466" y="261" text-anchor="middle" class="strong">Task-aware effort controller</text><text x="466" y="278" text-anchor="middle" class="lbl">compares confidence with the task's target</text>`;
+      [[290, "active channels", "gain, bandwidth"], [466, "conversion time", "→ resolution"], [642, "retention", "window length"]].forEach(([x, k1, k2]) => {
+        w += line(x, 237, x, 173, "fb", f) + `<text x="${x + 9}" y="202" class="knob">${k1}</text><text x="${x + 9}" y="217" class="knob-s">${k2}</text>`;
+      });
+      w += `<path d="M806,171 V264 H721" class="fb" marker-end="url(#${f})"/><text x="814" y="212" class="knob">confidence</text>`;
+      [[352, 3], [528, 2], [704, 4], [856, 1]].forEach(([x, k]) => { w += badge(x, 78, k); });
+      w += `<rect x="24" y="350" width="992" height="56" rx="10" class="obj"/><text x="40" y="371" class="eyb">DESIGN OBJECTIVE</text>`;
+      w += `<text x="40" y="394"><tspan class="acc">energy per accurate decision</tspan> = (sensing + conversion + storage + inference + <tspan class="sig-t">adaptation overhead</tspan>) ÷ accurate decisions</text>`;
+      w += `</svg>`;
+
+      // Tall: the same blocks stacked, with the controller beside them.
+      a = "na-" + uid; f = "nf-" + uid;
+      let n = `<svg viewBox="0 0 380 684" class="dg loop-narrow" role="img" aria-label="${aria}">${mk(a, f)}`;
+      n += line(16, 14, 40, 14, "wire", a) + `<text x="46" y="18" class="lbl">signal</text>`;
+      n += line(104, 14, 128, 14, "fb", f) + `<text x="134" y="18" class="lbl">inference feedback</text>`;
+      n += box(16, 32, 180, 50, "Sensor", "physical signal") + box(240, 32, 124, 50, "Task target", "accuracy, latency");
+      n += `<rect x="8" y="98" width="364" height="370" rx="14" class="chip"/><text x="358" y="458" text-anchor="end" class="eyb">NEAR-SENSOR CHIP</text>`;
+      [["Analog front end", "sensing precision", "box-acc", 3, "channels"], ["Data converter", "conversion effort", "box-acc", 2, "conversion time"],
+       ["Local memory", "task-aligned buffer", "box-acc", 4, "retention"], ["Inference", "edge model", "box", 1, ""]].forEach(([t1, t2, cls, k, knob], i) => {
+        const y = 128 + i * 86;
+        n += box(16, y, 180, 58, t1, t2, cls) + badge(182, y, k);
+        if (knob) n += line(299, y + 29, 199, y + 29, "fb", f) + `<text x="249" y="${y + 22}" text-anchor="middle" class="knob">${knob}</text>`;
+        if (i < 3) n += line(106, y + 58, 106, y + 83, "wire", a);
+      });
+      n += line(106, 82, 106, 125, "wire", a) + line(332, 82, 332, 125, "wire", a);
+      n += `<rect x="300" y="128" width="64" height="230" rx="10" class="ctrl"/>`;
+      n += `<text transform="translate(328 243) rotate(-90)" text-anchor="middle" class="strong">Task-aware effort controller</text><text transform="translate(347 243) rotate(-90)" text-anchor="middle" class="lbl">compares confidence with target</text>`;
+      n += `<path d="M196,415 H332 V361" class="fb" marker-end="url(#${f})"/><text x="262" y="408" text-anchor="middle" class="knob">confidence</text>`;
+      n += line(106, 444, 106, 489, "wire", a) + box(16, 492, 180, 48, "Decision", "only output");
+      n += `<rect x="8" y="556" width="364" height="120" rx="10" class="obj"/><text x="22" y="578" class="eyb">DESIGN OBJECTIVE</text>`;
+      n += `<text x="22" y="600" class="acc">energy per accurate decision =</text><text x="22" y="620">(sensing + conversion + storage</text>`;
+      n += `<text x="22" y="640">+ inference + <tspan class="sig-t">adaptation overhead</tspan>)</text><text x="22" y="660">÷ accurate decisions</text>`;
+      return w + n + `</svg>`;
+    },
     cdc(uid) {
       const a = "ah-" + uid, W = 520, H = 300, bw = 112, by = 28, bh = 58;
       const xs = [10, 136, 262, 388], ph = ["0°", "45°", "90°", "135°"];
