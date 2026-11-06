@@ -517,7 +517,7 @@ const SITE = {
 
   thread: {
     eyebrow: "One thread",
-    title: "Every project hit the<br>sensor-to-compute boundary",
+    title: "Every project hit the\nsensor-to-compute boundary",
     intro: "My projects follow the path a signal takes from the physical world to a decision, and each one taught me where that path loses energy or accuracy. Select a card to see the project.",
     stages: [
       { name: "Sense", cards: [
@@ -859,6 +859,7 @@ const SITE = {
     h = h.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
     h = h.replace(/==([^=]+)==/g, "<mark>$1</mark>");
     h = h.replace(/(^|[^*\w])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+    h = h.replace(/\n/g, "<br>");
     return h;
   }
   function fmt(v) {
